@@ -1,0 +1,12 @@
+{
+  "recommendations": [
+    "ms-dotnettools.csdevkit",
+    "editorconfig.editorconfig",
+    "davidanson.vscode-markdownlint",
+    "tintoy.msbuild-project-tools",
+    "esbenp.prettier-vscode",
+    "dotjoshjohnson.xml",
+    "adrianwilczynski.user-secrets",
+    "ms-azure-devops.azure-pipelines"
+  ]
+}
