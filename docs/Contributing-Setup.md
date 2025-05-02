@@ -1,43 +1,29 @@
 # Contributing Setup
 
----This documents the steps a maintainer or developer would follow to work on the library in their development environment---
-
----Update the details for this project, replacing "repotemplate" and anything else that needs changed---
-
 ## Required Software
 
 The requirements to setup, develop, and build this project are listed below.
 
 ### .NET Runtime
 
-.NET SDK 7.0 or newer
+.NET SDK 8.0 or newer
 
 - <https://dotnet.microsoft.com/en-us/download/dotnet/8.0>
 - See `global.json` file for specific SDK requirements
 
-### Node.js Runtime
-
-- [Node.js](https://nodejs.org/en/download) 20.10.0 or newer
-- [NVM for Windows](https://github.com/coreybutler/nvm-windows) to manage multiple installed versions of Node.js
-- See `engines` in the solution `package.json` for specific version requirements
-
 ### C# Editor
 
 - VS Code
-- Visual Studio
-- Rider
 
 ### Database
 
 SQL Server 2019 or newer compatible database
 
 - [SQL Server Linux](https://learn.microsoft.com/en-us/sql/linux/sql-server-linux-setup?view=sql-server-ver15)
-- [Azure SQL Edge](https://learn.microsoft.com/en-us/azure/azure-sql-edge/disconnected-deployment)
 
 ### SQL Editor
 
-- MS SQL Server Management Studio
-- Azure Data Studio
+- VS COde
 
 ## Sample Project
 
@@ -46,20 +32,11 @@ SQL Server 2019 or newer compatible database
 Running the sample project requires creating a new Xperience by Kentico database using the included template.
 
 Change directory in your console to `./examples/DancingGoat` and follow the instructions in the Xperience
-documentation on [creating a new database](https://docs.xperience.io/xp26/developers-and-admins/installation#Installation-CreatetheprojectdatabaseCreateProjectDatabase).
+documentation on [creating a new database](https://docs.kentico.com/developers-and-admins/installation#Installation-CreatetheprojectdatabaseCreateProjectDatabase).
 
 ### Admin Customization
 
-To run the Sample app Admin customization in development mode, add the following to your [User Secrets](https://learn.microsoft.com/en-us/aspnet/core/security/app-secrets?view=aspnetcore-7.0&tabs=windows#secret-manager) for the application.
-
-```json
-"CMSAdminClientModuleSettings": {
-  "kentico-xperience-integrations-repotemplate": {
-    "Mode": "Proxy",
-    "Port": 3009
-  }
-}
-```
+To run the Sample app Admin customization in development mode, add the following to your [User Secrets](https://learn.microsoft.com/en-us/aspnet/core/security/app-secrets?view=aspnetcore-8.0&tabs=windows#secret-manager) for the application.
 
 ## Development Workflow
 
