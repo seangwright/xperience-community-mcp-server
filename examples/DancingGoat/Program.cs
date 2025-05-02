@@ -59,7 +59,10 @@ builder.Services.AddDancingGoatServices();
 builder.Services.AddSingleton<IEmailActivityTrackingEvaluator, EmailActivityTrackingEvaluator>();
 
 // Adds the MCP dependencies
-builder.Services.AddXperienceMCPServer();
+if (builder.Environment.IsDevelopment())
+{
+    builder.Services.AddXperienceMCPServer();
+}
 
 ConfigureMembershipServices(builder.Services);
 
@@ -86,7 +89,10 @@ app.UseAuthorization();
 app.UseStatusCodePagesWithReExecute("/error/{0}");
 
 // Adds the MCP endpoint
-app.UseXperienceMCPServer();
+if (builder.Environment.IsDevelopment())
+{
+    app.UseXperienceMCPServer();
+}
 app.Kentico().MapRoutes();
 app.MapControllerRoute(
    name: "error",

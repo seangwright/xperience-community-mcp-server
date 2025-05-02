@@ -48,12 +48,18 @@ dotnet add package XperienceCommunity.MCPServer
    // ...
 
    // Adds the MCP dependencies
-   builder.Services.AddXperienceMCPServer();
+   if (builder.Environment.IsDevelopment())
+   {
+       builder.Services.AddXperienceMCPServer();
+   }
 
    // ...
 
    // Adds the MCP endpoint
-   app.UseXperienceMCPServer();
+   if (builder.Environment.IsDevelopment())
+   {
+       app.UseXperienceMCPServer();
+   }
 
    app.Kentico().MapRoutes();
 
