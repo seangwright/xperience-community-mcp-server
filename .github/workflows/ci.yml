@@ -14,6 +14,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          global-json-file: global.json
+
       - name: Run dotnet format
         run: dotnet format XperienceCommunity.MCPServer.sln --exclude ./examples/** --verify-no-changes
 
