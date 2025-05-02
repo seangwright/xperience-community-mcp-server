@@ -33,7 +33,7 @@ jobs:
       - name: "Pack and Publish"
         uses: ./.github/actions/pack-and-publish
         with:
-          projectPath: "./src/XperienceCommunity.PreviewComponentOutlines"
+          projectPath: "./src/XperienceCommunity.MCPServer"
           preReleaseVersion: ${{ github.run_number }}-${{ github.run_attempt }}
 
   publishPreRelease:
