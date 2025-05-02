@@ -1,0 +1,8 @@
+{
+  "servers": {
+    "xperience-mcp-server": {
+      "type": "http",
+      "url": "http://localhost:37841/xperience-mcp"
+    }
+  }
+}

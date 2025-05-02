@@ -15,7 +15,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Run dotnet format
-        run: dotnet format Kentico.Xperience.RepoTemplate.sln --exclude ./examples/** --verify-no-changes
+        run: dotnet format XperienceCommunity.MCPServer.sln --exclude ./examples/** --verify-no-changes
 
   build_and_test:
     name: Build and Test

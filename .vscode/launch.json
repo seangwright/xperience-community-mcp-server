@@ -8,7 +8,7 @@
       "name": ".NET Core Launch (web)",
       "type": "coreclr",
       "request": "launch",
-      "preLaunchTask": "build",
+      "preLaunchTask": "dotnet: build",
       "program": "bin/Debug/net8.0/DancingGoat.dll",
       "args": [],
       "cwd": "${workspaceFolder}/examples/DancingGoat",

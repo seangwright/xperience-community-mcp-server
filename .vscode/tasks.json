@@ -4,10 +4,10 @@
     {
       "type": "npm",
       "script": "install",
-      "path": "src/Kentico.Xperience.RepoTemplate/Admin/Client",
+      "path": "src/XperienceCommunity.MCPServer/Admin/Client",
       "group": "build",
       "problemMatcher": [],
-      "label": "npm: install - src/Kentico.Xperience.RepoTemplate/Admin/Client",
+      "label": "npm: install - src/XperienceCommunity.MCPServer/Admin/Client",
       "detail": "install dependencies from package"
     },
     {
@@ -22,7 +22,7 @@
       "command": "dotnet",
       "args": [
         "format",
-        "Kentico.Xperience.RepoTemplate.sln",
+        "XperienceCommunity.MCPServer.sln",
         "--exclude",
         "./examples/**"
       ],
@@ -40,27 +40,27 @@
     {
       "type": "npm",
       "script": "build",
-      "path": "src/Kentico.Xperience.RepoTemplate/Admin/Client",
+      "path": "src/XperienceCommunity.MCPServer/Admin/Client",
       "group": "build",
       "problemMatcher": [],
-      "label": "npm: build - src/Kentico.Xperience.RepoTemplate/Admin/Client",
+      "label": "npm: build - src/XperienceCommunity.MCPServer/Admin/Client",
       "detail": "webpack --mode=production"
     },
     {
       "type": "npm",
       "script": "build:dev",
-      "path": "src/Kentico.Xperience.RepoTemplate/Admin/Client",
+      "path": "src/XperienceCommunity.MCPServer/Admin/Client",
       "group": "build",
       "problemMatcher": [],
-      "label": "npm: build:dev - src/Kentico.Xperience.RepoTemplate/Admin/Client",
+      "label": "npm: build:dev - src/XperienceCommunity.MCPServer/Admin/Client",
       "detail": "webpack --mode=development"
     },
     {
       "type": "npm",
       "script": "start",
-      "path": "src/Kentico.Xperience.RepoTemplate/Admin/Client",
+      "path": "src/XperienceCommunity.MCPServer/Admin/Client",
       "problemMatcher": [],
-      "label": "npm: start - src/Kentico.Xperience.RepoTemplate/Admin/Client",
+      "label": "npm: start - src/XperienceCommunity.MCPServer/Admin/Client",
       "detail": "webpack serve --mode development"
     },
     {

@@ -31,10 +31,10 @@
     "editor.defaultFormatter": "ms-dotnettools.csharp"
   },
 
-  "dotnet.defaultSolution": "Kentico.Xperience.RepoTemplate.sln",
+  "dotnet.defaultSolution": "XperienceCommunity.MCPServer.sln",
 
   "eslint.workingDirectories": [
-    "./src/Kentico.Xperience.RepoTemplate/Admin/Client"
+    "./src/XperienceCommunity.MCPServer/Admin/Client"
   ],
 
   "files.associations": {
