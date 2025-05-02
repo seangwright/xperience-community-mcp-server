@@ -2,6 +2,10 @@
 
 [![CI: Build and Test](https://github.com/seangwright/xperience-community-mcp-server/actions/workflows/ci.yml/badge.svg)](https://github.com/seangwright/xperience-community-mcp-server/actions/workflows/ci.yml)
 
+[![Release: Publish to NuGet](https://github.com/seangwright/xperience-community-mcp-server/actions/workflows/publish.yml/badge.svg)](https://github.com/seangwright/xperience-community-mcp-server/actions/workflows/publish.yml)
+
+[![NuGet Package](https://img.shields.io/nuget/v/XperienceCommunity.MCPServer.svg)](https://www.nuget.org/packages/XperienceCommunity.MCPServer)
+
 ## Description
 
 An [MCP Server](https://code.visualstudio.com/docs/copilot/chat/mcp-servers) built with the [.NET MCP Server SDK](https://github.com/modelcontextprotocol/csharp-sdk) tailored for Xperience by Kentico projects and installed as a NuGet package.
