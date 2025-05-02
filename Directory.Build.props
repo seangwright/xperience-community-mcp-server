@@ -1,16 +1,17 @@
 <Project>
 
   <PropertyGroup>
-    <Company>Kentico Software</Company>
+    <Company>Sean G. Wright</Company>
     <Authors>$(Company)</Authors>
     <Copyright>Copyright © $(Company) $([System.DateTime]::Now.Year)</Copyright>
     <Trademark>$(Company)™</Trademark>
+    <Product>XperienceCommunity.MCPServer</Product>
     <VersionPrefix>1.0.0</VersionPrefix>
     <VersionSuffix>prerelease-1</VersionSuffix>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
 
-    <PackageProjectUrl>https://github.com/Kentico/REPOSITORY_NAME</PackageProjectUrl>
-    <PackageReleaseNotes>https://github.com/Kentico/REPOSITORY_NAME/releases</PackageReleaseNotes>
+    <PackageProjectUrl>https://github.com/seangwright/xperience-community-mcp-server</PackageProjectUrl>
+    <PackageReleaseNotes>https://github.com/seangwright/xperience-community-mcp-server/releases</PackageReleaseNotes>
     <PackageIcon>logo.png</PackageIcon>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageTags>kentico;xperience;ai;modelcontextprotocol;mcp</PackageTags>
@@ -33,7 +34,6 @@
     <RootNamespace>XperienceCommunity.MCPServer</RootNamespace>
 
     <EnableDefaultEmbeddedResourceItems>false</EnableDefaultEmbeddedResourceItems>
-    <TimestampServerUrl>http://timestamp.digicert.com</TimestampServerUrl>
 
     <!-- Required to prevent type conflicts with existing types -->
     <HotChocolateImplicitUsings>disable</HotChocolateImplicitUsings>

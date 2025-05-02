@@ -1,0 +1,65 @@
+name: "Release: Publish to NuGet"
+
+on:
+  workflow_dispatch:
+    inputs:
+      reason:
+        description: "The reason for running the workflow"
+        required: true
+        default: "Manual run"
+
+jobs:
+  createArtifacts:
+    name: Generate NuGet Packages
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          global-json-file: global.json
+
+      - name: Install dependencies
+        run: dotnet restore --locked-mode
+
+      - name: Build Solution
+        run: dotnet build -c Release --no-restore
+
+      - name: Test Solution
+        run: dotnet test --configuration Release --no-build --no-restore
+
+      - name: "Pack and Publish"
+        uses: ./.github/actions/pack-and-publish
+        with:
+          projectPath: "./src/XperienceCommunity.PreviewComponentOutlines"
+          preReleaseVersion: ${{ github.run_number }}-${{ github.run_attempt }}
+
+  publishPreRelease:
+    name: Publish PreRelease NuGet Package
+    environment: prerelease
+    needs: createArtifacts
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: prerelease
+
+      - name: Publish NuGet Package
+        run: dotnet nuget push *.nupkg -s https://api.nuget.org/v3/index.json -k ${{ secrets.NUGET_API_KEY }}
+
+  publishRelease:
+    name: Publish Release NuGet Package
+    environment: release
+    needs: [createArtifacts, publishPreRelease]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: release
+
+      - name: Publish NuGet Package
+        run: dotnet nuget push *.nupkg -s https://api.nuget.org/v3/index.json -k ${{ secrets.NUGET_API_KEY }}
