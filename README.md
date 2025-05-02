@@ -10,8 +10,8 @@ An [MCP Server](https://code.visualstudio.com/docs/copilot/chat/mcp-servers) bui
 
 ## Screenshots
 
- <a href="https://raw.githubusercontent.com/Kentico/community-portal/main/images/mcp-server-vs-code-xperience-dancing-goat.webp">
-    <img src="https://raw.githubusercontent.com/Kentico/community-portal/main/images/mcp-server-vs-code-xperience-dancing-goat.webp"
+ <a href="https://raw.githubusercontent.com/seangwright/xperience-community-mcp-server/main/images/mcp-server-vs-code-xperience-dancing-goat.webp">
+    <img src="https://raw.githubusercontent.com/seangwright/xperience-community-mcp-server/main/images/mcp-server-vs-code-xperience-dancing-goat.webp"
     width="400" alt="Using the MCP Server in VS Code">
 </a>
 
