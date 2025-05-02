@@ -1,7 +1,5 @@
 # Xperience Community MCP Server
 
----Select the correct badge for the support policy and update the GitHub Action pipeline badge to point to this repository (replace `repo-template`)---
-
 [![CI: Build and Test](https://github.com/seangwright/xperience-community-mcp-server/actions/workflows/ci.yml/badge.svg)](https://github.com/seangwright/xperience-community-mcp-server/actions/workflows/ci.yml)
 
 ## Description
