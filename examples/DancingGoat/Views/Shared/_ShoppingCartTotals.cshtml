@@ -1,0 +1,18 @@
+﻿@using CMS.Commerce
+@using DancingGoat.Commerce
+@using DancingGoat.Models
+
+@inject RazorPriceFormatter priceFormatter
+
+@model ShoppingCartViewModel
+
+<div class="cart-total">
+    <div class="cart-total-viewer">
+        <div class="label">
+            <span>@HtmlLocalizer["Total price"]</span>
+        </div>
+        <div class="value">
+            <span>@priceFormatter.Format(Model.TotalPrice)</span>
+        </div>
+    </div>
+</div>

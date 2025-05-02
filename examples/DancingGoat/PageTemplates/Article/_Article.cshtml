@@ -1,0 +1,69 @@
+﻿@using DancingGoat.PageTemplates
+@using DancingGoat.Models
+
+@model TemplateViewModel
+
+@{
+    Layout = "~/Views/Shared/_DancingGoatLayout.cshtml";
+    var viewModel = Model.GetTemplateModel<ArticleDetailViewModel>();
+
+    var hasRelatedArticles = viewModel.RelatedPages.Any();
+}
+
+
+<div class="article-detail-page">
+    @if (hasRelatedArticles)
+    {
+        <article class="article-detail col-lg-9 col-md-12 article-detail-related-box">
+            <h2>@viewModel.Title</h2>
+            <div class="article-detail-datetime">
+                @viewModel.PublicationDate.ToString("D")
+            </div>
+            @if (!string.IsNullOrEmpty(viewModel.TeaserUrl))
+            {
+                <div class="row">
+                    <div class="article-detail-image col-md-push-2 col-md-8">
+                        <img src="@Url.Content(viewModel.TeaserUrl)" alt="@viewModel.Title" title="@viewModel.Title" class="img-responsive" loading="lazy" />
+                    </div>
+                </div>
+            }
+            <div class="row">
+                <div class="article-detail-content fr-view">
+                    @Html.Raw(viewModel.Text)
+                </div>
+            </div>
+        </article>
+
+        <div class="article-related-articles-sidebar col-lg-3 col-md-6 col-sm-12">
+            <partial name="~/Views/DancingGoatArticle/RelatedPages.cshtml" model="viewModel.RelatedPages" />
+        </div>
+    }
+    else
+    {
+        <article class="col-lg-12 article-detail-related-box article-detail-full-width">
+            <div class="row equal-height">
+                @if (!string.IsNullOrEmpty(viewModel.TeaserUrl))
+                {
+                    <div class="article-detail-image col-lg-6 col-md-6">
+                        <img src="@Url.Content(viewModel.TeaserUrl)" alt="@viewModel.Title" title="@viewModel.Title" class="img-responsive" loading="lazy" />
+                    </div>
+                    <div class="col-lg-1 col-md-1 article-title--padding">
+                    </div>
+                }
+                <div class="col-lg-5 col-md-5 article-title--align-middle">
+                    <h2>@viewModel.Title</h2>
+                    <div class="article-detail-datetime">
+                        @viewModel.PublicationDate.ToString("D")
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="article-detail-content col-lg-9">
+                    @Html.Raw(viewModel.Text)
+                </div>
+            </div>
+        </article>
+    }
+
+    <div class="clear"></div>
+</div>
