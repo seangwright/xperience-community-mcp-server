@@ -1,10 +1,10 @@
+using System.Reflection;
+
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 
 using ModelContextProtocol.Protocol.Types;
-
-using System.Reflection;
 
 namespace XperienceCommunity.MCPServer;
 

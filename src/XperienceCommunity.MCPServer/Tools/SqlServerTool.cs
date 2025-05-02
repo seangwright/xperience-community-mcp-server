@@ -1,11 +1,11 @@
+using System.ComponentModel;
+using System.Text.Json;
+
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 
 using ModelContextProtocol.Server;
-
-using System.ComponentModel;
-using System.Text.Json;
 
 namespace XperienceCommunity.MCPServer.Tools;
 

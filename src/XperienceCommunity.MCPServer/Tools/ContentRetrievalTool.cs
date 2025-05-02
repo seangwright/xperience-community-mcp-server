@@ -1,3 +1,6 @@
+using System.ComponentModel;
+using System.Text.Json;
+
 using CMS.ContentEngine;
 using CMS.DataEngine;
 using CMS.Websites;
@@ -6,9 +9,6 @@ using CMS.Websites.Internal;
 using Microsoft.Extensions.Options;
 
 using ModelContextProtocol.Server;
-
-using System.ComponentModel;
-using System.Text.Json;
 
 namespace XperienceCommunity.MCPServer.Tools;
 
