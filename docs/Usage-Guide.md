@@ -19,3 +19,13 @@ LinkTag (taxonomy - use the taxonomy field definition from another reusable cont
 
 Use the schema and properties for requests and responses defined by the tools, not other naming conventions
 ```
+
+This prompt will guide your agent to create a new, valid Link content type using the tools exposed by the MCP Server.
+
+![New Link content type in the CI repository](/images/new-link-content-type-ci-repository.jpg)
+
+With [CI synchronization](https://docs.kentico.com/x/FAKQC) enabled, the new content type can be shared with other developers on your team through source control.
+
+![New Link content type in the Content Types application in Xperience's administration](/images/new-link-content-type-administration.jpg)
+
+Additionally, the new content type can be further customized with the agent or through Xperience's administration UI.
