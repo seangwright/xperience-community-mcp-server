@@ -7,7 +7,7 @@
     <Trademark>$(Company)™</Trademark>
     <Product>XperienceCommunity.MCPServer</Product>
     <VersionPrefix>1.0.0</VersionPrefix>
-    <VersionSuffix>prerelease-1</VersionSuffix>
+    <VersionSuffix></VersionSuffix>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
 
     <PackageProjectUrl>https://github.com/seangwright/xperience-community-mcp-server</PackageProjectUrl>
