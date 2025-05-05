@@ -10,6 +10,8 @@
 
 An [MCP Server](https://code.visualstudio.com/docs/copilot/chat/mcp-servers) built with the [.NET MCP Server SDK](https://github.com/modelcontextprotocol/csharp-sdk) tailored for Xperience by Kentico projects and installed as a NuGet package.
 
+Why use this library? By exposing a discrete set of documented tools to [an AI agent](https://code.visualstudio.com/blogs/2025/02/24/introducing-copilot-agent-mode) in an Xperience by Kentico project, that agent has more well structured context and capabilities. This means it can be a better copilot to developers building features for marketers using Xperience by Kentico.
+
 ## Screenshots
 
  <a href="https://raw.githubusercontent.com/seangwright/xperience-community-mcp-server/main/images/mcp-server-vs-code-xperience-dancing-goat.webp">
@@ -72,13 +74,26 @@ dotnet add package XperienceCommunity.MCPServer
 
 1. Set up your [MCP Server configuration VS Code](https://code.visualstudio.com/docs/copilot/chat/mcp-servers#_enable-mcp-support-in-vs-code)
 
-1. You can use the `.vscode/mcp.json` configuration as an example. The scheme, domain, and port come from the `examples/DancingGoat/Properties/launchSettings.json` file since the DancingGoat Xperience by Kentico application also runs the MCP Server. The default MCP Server path prefix is `/xperience-mcp`
+   ```json
+   {
+     "servers": {
+       "xperience-mcp-server": {
+         "type": "http",
+         "url": "http://localhost:<your-port-here>/xperience-mcp"
+       }
+     }
+   }
+   ```
+
+   You can use the `.vscode/mcp.json` configuration as an example. The scheme, domain, and port come from the `examples/DancingGoat/Properties/launchSettings.json` file since the DancingGoat Xperience by Kentico application also runs the MCP Server. The default MCP Server path prefix is `/xperience-mcp`
 
 1. Use the tools exposed by the Xperience Community MCP Server [in agent mode in VS Code](https://code.visualstudio.com/docs/copilot/chat/mcp-servers#_use-mcp-tools-in-agent-mode).
 
+   Example: "Tell me all of the content types in this project and a summary of their structure and relationships.
+
 ## Full Instructions
 
-View the [Usage Guide](./docs/Usage-Guide.md) for more detailed instructions.
+View the [Usage Guide](./docs/Usage-Guide.md) for more detailed instructions and examples.
 
 ## Contributing
 
