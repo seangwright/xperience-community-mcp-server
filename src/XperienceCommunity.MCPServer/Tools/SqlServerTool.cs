@@ -25,13 +25,19 @@ public static class SqlServerTool
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>A task that represents the asynchronous operation. The task result contains the query results as a JSON string.</returns>
     [
-        McpServerTool(Name = "ExecuteQuery"),
-        Description("Executes a SQL query against the current Xperience by Kentico database and returns the results")
+        McpServerTool(
+            Name = nameof(ExecuteSQLQuery),
+            Destructive = true,
+            Idempotent = false,
+            OpenWorld = false,
+            ReadOnly = false,
+            Title = "Execute SQL query"),
+        Description("Executes an arbitrary SQL query against the current Xperience by Kentico database and returns the results")
     ]
-    public static async Task<string> ExecuteQueryAsync(
+    public static async Task<string> ExecuteSQLQuery(
         IOptions<XperienceMCPServerConfiguration> options,
         IConfiguration configuration,
-        [Description("The SQL query to execute")] string query,
+        [Description("The SQL query to execute.")] string query,
         CancellationToken cancellationToken)
     {
         string? connectionString = configuration.GetConnectionString("CMSConnectionString");
@@ -64,10 +70,17 @@ public static class SqlServerTool
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     [
-        McpServerTool(Name = "GetTables"),
-        Description("Lists all tables of the current Xperience by Kentico database")
+        McpServerTool(
+            Name = nameof(GetSQLTables),
+            Destructive = false,
+            Idempotent = true,
+            OpenWorld = false,
+            ReadOnly = true,
+            Title = "Get SQL tables"
+        ),
+        Description("Lists all schemas and tables of the current Xperience by Kentico database.")
     ]
-    public static async Task<string> GetTablesAsync(
+    public static async Task<string> GetSQLTables(
         IOptions<XperienceMCPServerConfiguration> options,
         IConfiguration configuration,
         CancellationToken cancellationToken)
@@ -83,7 +96,7 @@ public static class SqlServerTool
             WHERE TABLE_TYPE = 'BASE TABLE'
             """;
 
-        return await ExecuteQueryAsync(options, configuration, query, cancellationToken);
+        return await ExecuteSQLQuery(options, configuration, query, cancellationToken);
     }
 
     /// <summary>
@@ -95,13 +108,20 @@ public static class SqlServerTool
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     [
-        McpServerTool(Name = "GetColumns"),
-        Description("Lists all columns for the specified table of the current Xperience by Kentico database")
+        McpServerTool(
+            Name = nameof(GetSQLTableColumns),
+            Destructive = false,
+            Idempotent = true,
+            OpenWorld = false,
+            ReadOnly = true,
+            Title = "Get SQL table columns"
+        ),
+        Description("Lists all columns for the specified table of the current Xperience by Kentico database.")
     ]
-    public static async Task<string> GetColumnsAsync(
+    public static async Task<string> GetSQLTableColumns(
         IOptions<XperienceMCPServerConfiguration> options,
         IConfiguration configuration,
-        [Description("The database table name")] string tableName,
+        [Description("The SQL database table name.")] string tableName,
         CancellationToken cancellationToken)
     {
         string? connectionString = configuration.GetConnectionString("CMSConnectionString");
@@ -132,6 +152,6 @@ public static class SqlServerTool
             WHERE TABLE_NAME = '{tableName}'
             """;
 
-        return await ExecuteQueryAsync(options, configuration, query, cancellationToken);
+        return await ExecuteSQLQuery(options, configuration, query, cancellationToken);
     }
 }

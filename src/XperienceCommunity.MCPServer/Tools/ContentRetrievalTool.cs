@@ -126,14 +126,14 @@ public static class ContentRetrievalTool
     /// <returns></returns>
     /// <exception cref="ArgumentException"></exception>
     [McpServerTool(
-        Name = "CreateContentType",
+        Name = nameof(CreateNewContentType),
         Destructive = false,
         Idempotent = false,
         OpenWorld = false,
         ReadOnly = false,
         Title = "Create new content type"),
     Description("Creates a new content type in the Xperience by Kentico database from the given settings")]
-    public static async Task<string> CreateContentType(
+    public static async Task<string> CreateNewContentType(
         IOptions<XperienceMCPServerConfiguration> options,
         [Description("The content type definition")] DataClassInfoNewRequest dataClassInfo)
     {
@@ -152,7 +152,7 @@ public static class ContentRetrievalTool
     /// <returns></returns>
     /// <exception cref="ArgumentException"></exception>
     [McpServerTool(
-        Name = "UpdateContentType",
+        Name = nameof(UpdateContentType),
         Destructive = false,
         Idempotent = true,
         OpenWorld = false,
@@ -176,12 +176,12 @@ public static class ContentRetrievalTool
     /// <param name="options"></param>
     /// <returns></returns>
     [McpServerTool(
-        Name = "GetAllContentTypeIcons",
+        Name = nameof(GetAllContentTypeIcons),
         Destructive = false,
         Idempotent = true,
         OpenWorld = false,
         ReadOnly = true,
-        Title = "Get all web page URLs by channel"),
+        Title = "Get all content type icons"),
     Description("Gets all valid icons for content types")]
     public static string GetAllContentTypeIcons(
         IOptions<XperienceMCPServerConfiguration> options
