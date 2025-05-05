@@ -7,7 +7,11 @@ using ModelContextProtocol.Server;
 namespace XperienceCommunity.MCPServer.Prompts;
 
 /// <summary>
+/// Currently, prompts are not supported by VS Code's MCP server integration with agents.
+/// https://code.visualstudio.com/docs/copilot/chat/mcp-servers#_supported-mcp-capabilities
 /// 
+/// Watch this issue for updates to suppport prompts and resources.
+/// https://github.com/microsoft/vscode/issues/244173
 /// </summary>
 [McpServerPromptType]
 public static class SqlServerPrompts
