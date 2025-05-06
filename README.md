@@ -72,6 +72,8 @@ dotnet add package XperienceCommunity.MCPServer
    // ...
    ```
 
+1. Start your Xperience by Kentico application.
+
 1. Set up your [MCP Server configuration VS Code](https://code.visualstudio.com/docs/copilot/chat/mcp-servers#_enable-mcp-support-in-vs-code)
 
    ```json
@@ -85,11 +87,15 @@ dotnet add package XperienceCommunity.MCPServer
    }
    ```
 
-   You can use the `.vscode/mcp.json` configuration as an example. The scheme, domain, and port come from the `examples/DancingGoat/Properties/launchSettings.json` file since the DancingGoat Xperience by Kentico application also runs the MCP Server. The default MCP Server path prefix is `/xperience-mcp`
+   You can use the `.vscode/mcp.json` configuration as an example. The scheme, domain, and port come from the `examples/DancingGoat/Properties/launchSettings.json` file since the DancingGoat Xperience by Kentico application also runs the MCP Server. The default MCP Server path prefix is `/xperience-mcp`.
 
-1. Use the tools exposed by the Xperience Community MCP Server [in agent mode in VS Code](https://code.visualstudio.com/docs/copilot/chat/mcp-servers#_use-mcp-tools-in-agent-mode).
+   You can use the VS Code command palette to [manage and start your MCP Server](https://code.visualstudio.com/docs/copilot/chat/mcp-servers#_managing-tools) or you can click the "Start" action above your server configuration in `mcp.json`.
 
-   Example: "Tell me all of the content types in this project and a summary of their structure and relationships.
+1. Use the tools exposed by the Xperience Community MCP Server [in agent mode in VS Code](https://code.visualstudio.com/docs/copilot/chat/mcp-servers#_use-mcp-tools-in-agent-mode) with a prompt in GitHub Copilot chat.
+
+   ```text
+   Tell me about some of the web page content types in this project and a summary of their structure and relationships. For example, let me know if some of these web page content types have references to content items of other types as part of their field definition.
+   ```
 
 ## Full Instructions
 
