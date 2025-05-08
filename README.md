@@ -12,6 +12,8 @@ An [MCP Server](https://code.visualstudio.com/docs/copilot/chat/mcp-servers) bui
 
 Why use this library? By exposing a discrete set of documented tools to [an AI agent](https://code.visualstudio.com/blogs/2025/02/24/introducing-copilot-agent-mode) in an Xperience by Kentico project, that agent has more well structured context and capabilities. This means it can be a better copilot to developers building features for marketers using Xperience by Kentico.
 
+For a more detailed explanation of this project, read the blog post _[Turn your Xperience by Kentico application into an MCP Server](https://community.kentico.com/blog/turn-your-xperience-by-kentico-application-into-an-mcp-server)_.
+
 ## Screenshots
 
  <a href="https://raw.githubusercontent.com/seangwright/xperience-community-mcp-server/main/images/mcp-server-vs-code-xperience-dancing-goat.webp">
@@ -34,7 +36,7 @@ Why use this library? By exposing a discrete set of documented tools to [an AI a
 
 ### Other requirements
 
-- [VS Code Insiders](https://code.visualstudio.com/insiders/) until HTTP Streaming MCP support is released in VS Code in May-June 2025.
+- [The latest April 2025 release](https://code.visualstudio.com/updates/v1_100#_mcp-support-for-streamable-http) of VS Code (v1.100) or newer, which supports MCP Servers using HTTP streaming.
 
 ## Package Installation
 
