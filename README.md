@@ -91,6 +91,8 @@ dotnet add package XperienceCommunity.MCPServer
 
    You can use the VS Code command palette to [manage and start your MCP Server](https://code.visualstudio.com/docs/copilot/chat/mcp-servers#_managing-tools) or you can click the "Start" action above your server configuration in `mcp.json`.
 
+   **Note**: VS Code's MCP client [does not yet support self-signed certificates](https://github.com/microsoft/vscode/issues/248170), so you will need to add an http:// binding in your ASP.NET Core `launchSettings.json` file if you have been using https:// and [dev-certs](https://learn.microsoft.com/en-us/dotnet/core/tools/dotnet-dev-certs) for your Xperience application. This binding can be any unused localhost port. Ex: `http://localhost:34543`. After you add the binding, update your `mcp.json` to use the `http://` URL.
+
 1. Use the tools exposed by the Xperience Community MCP Server [in agent mode in VS Code](https://code.visualstudio.com/docs/copilot/chat/mcp-servers#_use-mcp-tools-in-agent-mode) with a prompt in GitHub Copilot chat.
 
    ```text
