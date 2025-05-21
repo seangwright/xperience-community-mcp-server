@@ -8,7 +8,6 @@
   <ItemGroup>
     <PackageReference Include="Kentico.Xperience.WebApp" />
     <PackageReference Include="Kentico.Xperience.Admin" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" />
     <PackageReference Include="ModelContextProtocol" />
     <PackageReference Include="ModelContextProtocol.AspNetCore" />
   </ItemGroup>
