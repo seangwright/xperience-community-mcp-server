@@ -80,7 +80,8 @@ namespace DancingGoat.Models
                     .WithLinkedItems(1)
                     .TopN(topN)
                     .OrderBy(OrderByColumn.Desc(nameof(ArticlePage.ArticlePagePublishDate)))
-                    .ForWebsite(WebsiteChannelContext.WebsiteChannelName, PathMatch.Children(treePath)));
+                    .ForWebsite(WebsiteChannelContext.WebsiteChannelName, PathMatch.Children(treePath))
+                    .SetUrlLanguageBehavior(UrlLanguageBehavior.UseRequestedLanguage));
         }
 
 
@@ -91,6 +92,7 @@ namespace DancingGoat.Models
                 config => config
                     .WithLinkedItems(3, options => options.IncludeWebPageData())
                     .ForWebsite(WebsiteChannelContext.WebsiteChannelName)
+                    .SetUrlLanguageBehavior(UrlLanguageBehavior.UseRequestedLanguage)
                     .Where(where => where.WhereEquals(nameof(IWebPageContentQueryDataContainer.WebPageItemID), id)));
         }
 

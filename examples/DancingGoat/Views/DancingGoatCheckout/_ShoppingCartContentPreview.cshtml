@@ -2,8 +2,6 @@
 @using DancingGoat.Commerce
 @using DancingGoat.Models
 
-@inject RazorPriceFormatter priceFormatter
-
 @model ShoppingCartViewModel
 
 @foreach (var cartItem in Model.Items)
@@ -33,7 +31,7 @@
             @Html.ValidationMessage(cartItem.ContentItemId.ToString(), new { @class = "red"} )
         </div>
         <div class="col-md-2 cart-item-subtotal">
-            <span>@priceFormatter.Format(cartItem.TotalPrice)</span>
+            <price>@cartItem.TotalPrice</price>
         </div>
     </div>
     <hr />

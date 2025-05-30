@@ -5,9 +5,12 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using CMS.ContentEngine;
+using CMS.DataEngine;
 using CMS.Helpers;
 using CMS.Websites;
 using CMS.Websites.Routing;
+
+using Kentico.Content.Web.Mvc.Routing;
 
 namespace DancingGoat.Models
 {
@@ -17,15 +20,25 @@ namespace DancingGoat.Models
     public class HomePageRepository : ContentRepositoryBase
     {
         private readonly IWebPageLinkedItemsDependencyAsyncRetriever webPageLinkedItemsDependencyRetriever;
+        private readonly IInfoProvider<WebsiteChannelInfo> websiteChannelInfoProvider;
+        private readonly IPreferredLanguageRetriever preferredLanguageRetriever;
 
 
         /// <summary>
         /// Initializes new instance of <see cref="HomePageRepository"/>.
         /// </summary>
-        public HomePageRepository(IWebsiteChannelContext websiteChannelContext, IContentQueryExecutor executor, IProgressiveCache cache, IWebPageLinkedItemsDependencyAsyncRetriever webPageLinkedItemsDependencyRetriever)
+        public HomePageRepository(
+            IWebsiteChannelContext websiteChannelContext,
+            IContentQueryExecutor executor,
+            IProgressiveCache cache,
+            IWebPageLinkedItemsDependencyAsyncRetriever webPageLinkedItemsDependencyRetriever,
+            IInfoProvider<WebsiteChannelInfo> websiteChannelInfoProvider,
+            IPreferredLanguageRetriever preferredLanguageRetriever)
             : base(websiteChannelContext, executor, cache)
         {
             this.webPageLinkedItemsDependencyRetriever = webPageLinkedItemsDependencyRetriever;
+            this.websiteChannelInfoProvider = websiteChannelInfoProvider;
+            this.preferredLanguageRetriever = preferredLanguageRetriever;
         }
 
 
@@ -44,6 +57,24 @@ namespace DancingGoat.Models
         }
 
 
+        /// <summary>
+        /// Returns <see cref="HomePage"/> of the website channel.
+        /// </summary>
+        public async Task<HomePage> GetChannelHomePage(CancellationToken cancellationToken = default)
+        {
+            var websiteChannelInfo = await websiteChannelInfoProvider.GetAsync(WebsiteChannelContext.WebsiteChannelID, cancellationToken);
+            var languageName = preferredLanguageRetriever.Get();
+
+            var queryBuilder = GetQueryBuilder(websiteChannelInfo.WebsiteChannelHomePage, languageName);
+
+            var cacheSettings = new CacheSettings(60, WebsiteChannelContext.WebsiteChannelName, websiteChannelInfo.WebsiteChannelHomePage, languageName);
+
+            var result = await GetCachedQueryResult<HomePage>(queryBuilder, null, cacheSettings, GetDependencyCacheKeys, cancellationToken);
+
+            return result.FirstOrDefault();
+        }
+
+
         private ContentItemQueryBuilder GetQueryBuilder(int webPageItemId, string languageName)
         {
             return new ContentItemQueryBuilder()
@@ -51,7 +82,21 @@ namespace DancingGoat.Models
                         config => config
                                 .WithLinkedItems(4)
                                 .ForWebsite(WebsiteChannelContext.WebsiteChannelName)
+                                .SetUrlLanguageBehavior(UrlLanguageBehavior.UseRequestedLanguage)
                                 .Where(where => where.WhereEquals(nameof(IWebPageContentQueryDataContainer.WebPageItemID), webPageItemId))
+                                .TopN(1))
+                    .InLanguage(languageName);
+        }
+
+
+        private ContentItemQueryBuilder GetQueryBuilder(string homePageTreePath, string languageName)
+        {
+            return new ContentItemQueryBuilder()
+                    .ForContentType(HomePage.CONTENT_TYPE_NAME,
+                        config => config
+                                .WithLinkedItems(4)
+                                .ForWebsite(WebsiteChannelContext.WebsiteChannelName, PathMatch.Single(homePageTreePath))
+                                .SetUrlLanguageBehavior(UrlLanguageBehavior.UseRequestedLanguage)
                                 .TopN(1))
                     .InLanguage(languageName);
         }

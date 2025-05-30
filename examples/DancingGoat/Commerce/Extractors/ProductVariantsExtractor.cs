@@ -4,22 +4,25 @@ using DancingGoat.Models;
 
 namespace DancingGoat.Commerce
 {
-    /// <inheritdoc cref="IProductVariantsExtractor"/>
-    internal class ProductVariantsExtractor : IProductVariantsExtractor
+    /// <summary>
+    /// Extractor of product-specific variants.
+    /// </summary>
+    public sealed class ProductVariantsExtractor
     {
-        private readonly ICollection<IProductTypeVariantsExtractor> parametersExtractors;
+        private readonly IEnumerable<IProductTypeVariantsExtractor> parametersExtractors;
 
 
-        public ProductVariantsExtractor()
+        public ProductVariantsExtractor(IEnumerable<IProductTypeVariantsExtractor> parametersExtractors)
         {
-            parametersExtractors =
-            [
-                new ProductTemplateAlphaSizeVariantsExtractor()
-            ];
+            this.parametersExtractors = parametersExtractors;
         }
 
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Extract product variants and update the dictionary of variants.
+        /// </summary>
+        /// <param name="product">Product to process.</param>
+        /// <returns>Dictionary containing product variants.</returns>
         public IDictionary<int, string> ExtractVariantsValue(IProductFields product)
         {
             var result = new Dictionary<int, string>();
@@ -40,7 +43,11 @@ namespace DancingGoat.Commerce
         }
 
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Extract product variants SKU code and update the dictionary of variants.
+        /// </summary>
+        /// <param name="product">Product to process.</param>
+        /// <returns>Dictionary containing product variants SKU code.</returns>
         public IDictionary<int, string> ExtractVariantsSKUCode(IProductFields product)
         {
             var result = new Dictionary<int, string>();

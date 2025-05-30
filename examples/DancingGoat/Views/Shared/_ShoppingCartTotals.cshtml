@@ -2,8 +2,6 @@
 @using DancingGoat.Commerce
 @using DancingGoat.Models
 
-@inject RazorPriceFormatter priceFormatter
-
 @model ShoppingCartViewModel
 
 <div class="cart-total">
@@ -12,7 +10,7 @@
             <span>@HtmlLocalizer["Total price"]</span>
         </div>
         <div class="value">
-            <span>@priceFormatter.Format(Model.TotalPrice)</span>
+            <price>@Model.TotalPrice</price>
         </div>
     </div>
 </div>

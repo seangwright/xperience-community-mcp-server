@@ -27,4 +27,4 @@ internal static class ShoppingCartDataModelExtensions
         shoppingCart.ShoppingCartData = JsonSerializer.Serialize(shoppingCartData);
     }
 }
-#pragma warning restore KXE0002 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
+#pragma warning restore KXE0002 // Commerce feature is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.

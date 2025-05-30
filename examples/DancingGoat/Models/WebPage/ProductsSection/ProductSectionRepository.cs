@@ -75,6 +75,7 @@ namespace DancingGoat.Models
                     config
                         .ForWebsite(WebsiteChannelContext.WebsiteChannelName)
                         .Where(where => where.WhereEquals(nameof(WebPageFields.WebPageItemID), id))
+                        .SetUrlLanguageBehavior(UrlLanguageBehavior.UseRequestedLanguage)
                         .TopN(1))
                 .InLanguage(languageName);
         }

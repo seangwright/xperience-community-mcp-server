@@ -19,15 +19,13 @@ namespace DancingGoat.ViewComponents
     public class CafeCardSectionViewComponent : ViewComponent
     {
         private readonly ContactsPageRepository contactsPageRepository;
-        private readonly IWebPageUrlRetriever webPageUrlRetriever;
         private readonly IPreferredLanguageRetriever currentLanguageRetriever;
 
 
-        public CafeCardSectionViewComponent(IPreferredLanguageRetriever currentLanguageRetriever, ContactsPageRepository contactsPageRepository, IWebPageUrlRetriever webPageUrlRetriever)
+        public CafeCardSectionViewComponent(IPreferredLanguageRetriever currentLanguageRetriever, ContactsPageRepository contactsPageRepository)
         {
             this.currentLanguageRetriever = currentLanguageRetriever;
             this.contactsPageRepository = contactsPageRepository;
-            this.webPageUrlRetriever = webPageUrlRetriever;
         }
 
 
@@ -46,7 +44,7 @@ namespace DancingGoat.ViewComponents
             const string CONTACTS_PAGE_TREE_PATH = "/Contacts";
 
             var contactsPage = await contactsPageRepository.GetContactsPage(CONTACTS_PAGE_TREE_PATH, languageName, cancellationToken);
-            var url = await webPageUrlRetriever.Retrieve(contactsPage, languageName, cancellationToken);
+            var url = contactsPage.GetUrl();
 
             return url.RelativePath;
         }

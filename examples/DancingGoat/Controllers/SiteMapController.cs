@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using System.Xml;
 
 using CMS.ContentEngine;
-using CMS.ContentEngine.Internal;
 using CMS.Helpers;
 using CMS.Websites;
 using CMS.Websites.Routing;
@@ -26,8 +25,6 @@ namespace DancingGoat.Controllers
         private readonly IContentQueryExecutor contentQueryExecutor;
         private readonly IProgressiveCache progressiveCache;
         private readonly IWebsiteChannelContext websiteChannelContext;
-        private readonly IWebPageUrlRetriever webPageUrlRetriever;
-        private readonly IContentLanguageRetriever contentLanguageRetriever;
         private static readonly double cacheMinutes = TimeSpan.FromDays(0).TotalMinutes;
 
         /// <summary>
@@ -36,15 +33,11 @@ namespace DancingGoat.Controllers
         public SiteMapController(
             IContentQueryExecutor contentQueryExecutor,
             IProgressiveCache progressiveCache,
-            IWebsiteChannelContext websiteChannelContext,
-            IWebPageUrlRetriever webPageUrlRetriever,
-            IContentLanguageRetriever contentLanguageRetriever)
+            IWebsiteChannelContext websiteChannelContext)
         {
             this.contentQueryExecutor = contentQueryExecutor;
             this.progressiveCache = progressiveCache;
             this.websiteChannelContext = websiteChannelContext;
-            this.webPageUrlRetriever = webPageUrlRetriever;
-            this.contentLanguageRetriever = contentLanguageRetriever;
         }
 
 
@@ -85,28 +78,20 @@ namespace DancingGoat.Controllers
                 .ForContentTypes(p => p.OfReusableSchema(ISEOFields.REUSABLE_FIELD_SCHEMA_NAME).ForWebsite())
                 .Parameters(p =>
                     // Limit data to required columns
-                    p.Columns(
-                        nameof(IWebPageContentQueryDataContainer.WebPageUrlPath),
-                        nameof(IWebPageContentQueryDataContainer.WebPageItemTreePath),
-                        nameof(IWebPageContentQueryDataContainer.ContentItemCommonDataContentLanguageID))
+                    p.UrlPathColumns()
                     // Filter out pages that don't allow search indexing,
                     // the default value is true, so null values are considered as true as well
                     .Where(w =>
                         w.WhereNull(nameof(ISEOFields.SEOFieldsAllowSearchIndexing))
                             .Or().WhereTrue(nameof(ISEOFields.SEOFieldsAllowSearchIndexing))));
 
-            var languagePaths = await contentQueryExecutor.GetWebPageResult(builder,
-                data => (
-                    UrlPath: data.WebPageUrlPath,
-                    TreePath: data.WebPageItemTreePath,
-                    LanguageId: data.ContentItemCommonDataContentLanguageID),
-                options, HttpContext.RequestAborted);
+            var languagePaths = await contentQueryExecutor.GetMappedWebPageResult<IWebPageFieldsSource>(builder, options, HttpContext.RequestAborted);
 
-            return await BuildSitemap(languagePaths, HttpContext.Request);
+            return BuildSitemap(languagePaths, HttpContext.Request);
         }
 
 
-        private async Task<string> BuildSitemap(IEnumerable<(string UrlPath, string TreePath, int LanguageId)> pages, HttpRequest request)
+        private string BuildSitemap(IEnumerable<IWebPageFieldsSource> pages, HttpRequest request)
         {
             var stringBuilder = new StringBuilder();
             using (var xmlWriter = XmlWriter.Create(stringBuilder, new XmlWriterSettings { Indent = true }))
@@ -116,8 +101,7 @@ namespace DancingGoat.Controllers
 
                 foreach (var page in pages)
                 {
-                    var language = await contentLanguageRetriever.GetContentLanguageOrThrow(page.LanguageId);
-                    var pageUrl = await webPageUrlRetriever.Retrieve(page.UrlPath, page.TreePath, websiteChannelContext.WebsiteChannelID, language.ContentLanguageName);
+                    var pageUrl = page.GetUrl();
 
                     xmlWriter.WriteStartElement("url");
                     xmlWriter.WriteElementString("loc", pageUrl.AbsoluteUrl);

@@ -8,8 +8,10 @@ using Kentico.Content.Web.Mvc.Routing;
 
 namespace DancingGoat.Services
 {
-    /// <inheritdoc cref="IWebPageUrlProvider"/>
-    internal class WebPageUrlProvider : IWebPageUrlProvider
+    /// <summary>
+    /// Provides URLs of the web pages in the Dancing Goat sample application.
+    /// </summary>
+    public sealed class WebPageUrlProvider
     {
         private readonly IWebPageUrlRetriever webPageUrlRetriever;
         private readonly IWebsiteChannelContext websiteChannelContext;
@@ -21,12 +23,6 @@ namespace DancingGoat.Services
             this.webPageUrlRetriever = webPageUrlRetriever;
             this.websiteChannelContext = websiteChannelContext;
             this.preferredLanguageRetriever = preferredLanguageRetriever;
-        }
-
-
-        public async Task<string> HomePageUrl(string languageName = null, CancellationToken cancellationToken = default)
-        {
-            return await GetRelativeWebPagePath(DancingGoatConstants.HOME_PAGE_TREE_PATH, languageName, cancellationToken);
         }
 
 

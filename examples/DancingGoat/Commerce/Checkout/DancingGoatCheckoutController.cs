@@ -33,20 +33,20 @@ namespace DancingGoat.Commerce;
 public sealed class DancingGoatCheckoutController : Controller
 {
     private readonly CountryStateRepository countryStateRepository;
-    private readonly IWebPageUrlProvider webPageUrlProvider;
+    private readonly WebPageUrlProvider webPageUrlProvider;
     private readonly ICurrentShoppingCartService currentShoppingCartService;
     private readonly UserManager<ApplicationUser> userManager;
-    private readonly ICustomerDataRetriever customerDataRetriever;
+    private readonly CustomerDataRetriever customerDataRetriever;
     private readonly IPreferredLanguageRetriever currentLanguageRetriever;
-    private readonly IOrderService orderService;
+    private readonly OrderService orderService;
     private readonly ProductRepository productRepository;
     private readonly ProductPageRepository productPageRepository;
     private readonly IStringLocalizer<SharedResources> localizer;
     private readonly ProductNameProvider productNameProvider;
 
-    public DancingGoatCheckoutController(CountryStateRepository countryStateRepository, IWebPageUrlProvider webPageUrlProvider, ICurrentShoppingCartService currentShoppingCartService,
-                                         UserManager<ApplicationUser> userManager, ICustomerDataRetriever customerDataRetriever, IPreferredLanguageRetriever currentLanguageRetriever,
-                                         IOrderService orderService, ProductRepository productRepository, ProductPageRepository productPageRepository,
+    public DancingGoatCheckoutController(CountryStateRepository countryStateRepository, WebPageUrlProvider webPageUrlProvider, ICurrentShoppingCartService currentShoppingCartService,
+                                         UserManager<ApplicationUser> userManager, CustomerDataRetriever customerDataRetriever, IPreferredLanguageRetriever currentLanguageRetriever,
+                                         OrderService orderService, ProductRepository productRepository, ProductPageRepository productPageRepository,
                                          IStringLocalizer<SharedResources> localizer, ProductNameProvider productNameProvider)
     {
         this.countryStateRepository = countryStateRepository;
@@ -140,11 +140,11 @@ public sealed class DancingGoatCheckoutController : Controller
         var customerDto = customer.ToCustomerDto(customerAddress);
         var shoppingCartData = shoppingCart.GetShoppingCartDataModel();
 
-        await orderService.CreateOrder(shoppingCartData, customerDto, user?.Id ?? 0, cancellationToken);
+        var orderNumber = await orderService.CreateOrder(shoppingCartData, customerDto, user?.Id ?? 0, cancellationToken);
 
         await currentShoppingCartService.Discard(cancellationToken);
 
-        return View();
+        return View(new ConfirmOrderViewModel(orderNumber));
     }
 
 

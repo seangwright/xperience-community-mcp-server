@@ -22,7 +22,6 @@ namespace DancingGoat.Controllers
     {
         private readonly ArticlePageRepository articlePageRepository;
         private readonly ArticlesSectionRepository articlesSectionRepository;
-        private readonly IWebPageUrlRetriever urlRetriever;
         private readonly IWebPageDataContextRetriever webPageDataContextRetriever;
         private readonly IPreferredLanguageRetriever currentLanguageRetriever;
 
@@ -30,13 +29,11 @@ namespace DancingGoat.Controllers
         public DancingGoatArticleController(
             ArticlePageRepository articlePageRepository,
             ArticlesSectionRepository articlesSectionRepository,
-            IWebPageUrlRetriever urlRetriever,
             IWebPageDataContextRetriever webPageDataContextRetriever,
             IPreferredLanguageRetriever currentLanguageRetriever)
         {
             this.articlePageRepository = articlePageRepository;
             this.articlesSectionRepository = articlesSectionRepository;
-            this.urlRetriever = urlRetriever;
             this.webPageDataContextRetriever = webPageDataContextRetriever;
             this.currentLanguageRetriever = currentLanguageRetriever;
         }
@@ -55,13 +52,11 @@ namespace DancingGoat.Controllers
             var models = new List<ArticleViewModel>();
             foreach (var article in articles)
             {
-                var articleModel = await ArticleViewModel.GetViewModel(article, urlRetriever, languageName);
+                var articleModel = ArticleViewModel.GetViewModel(article);
                 models.Add(articleModel);
             }
 
-            var url = (await urlRetriever.Retrieve(articlesSection, languageName)).RelativePath;
-
-            var model = ArticlesSectionViewModel.GetViewModel(articlesSection, models, url);
+            var model = ArticlesSectionViewModel.GetViewModel(articlesSection, models, articlesSection.GetUrl().RelativePath);
 
             return View(model);
         }
@@ -79,7 +74,7 @@ namespace DancingGoat.Controllers
                 return NotFound();
             }
 
-            var model = await ArticleDetailViewModel.GetViewModel(article, languageName, urlRetriever);
+            var model = ArticleDetailViewModel.GetViewModel(article);
 
             return new TemplateResult(model);
         }

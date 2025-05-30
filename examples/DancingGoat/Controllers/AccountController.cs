@@ -4,9 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using CMS.Core;
-using CMS.DataEngine;
 using CMS.Websites;
-using CMS.Websites.Routing;
 
 using DancingGoat.Models;
 
@@ -26,10 +24,7 @@ namespace DancingGoat.Controllers
     {
         private readonly IStringLocalizer<SharedResources> localizer;
         private readonly IEventLogService eventLogService;
-        private readonly IInfoProvider<WebsiteChannelInfo> websiteChannelProvider;
-        private readonly IWebPageUrlRetriever webPageUrlRetriever;
-        private readonly IWebsiteChannelContext websiteChannelContext;
-        private readonly IPreferredLanguageRetriever currentLanguageRetriever;
+        private readonly HomePageRepository homePageRepository;
         private readonly UserManager<ApplicationUser> userManager;
         private readonly SignInManager<ApplicationUser> signInManager;
 
@@ -39,19 +34,14 @@ namespace DancingGoat.Controllers
             SignInManager<ApplicationUser> signInManager,
             IStringLocalizer<SharedResources> localizer,
             IEventLogService eventLogService,
-            IInfoProvider<WebsiteChannelInfo> websiteChannelProvider,
-            IWebPageUrlRetriever webPageUrlRetriever,
-            IWebsiteChannelContext websiteChannelContext,
-            IPreferredLanguageRetriever preferredLanguageRetriever)
+            IPreferredLanguageRetriever preferredLanguageRetriever,
+            HomePageRepository homePageRepository)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
             this.localizer = localizer;
             this.eventLogService = eventLogService;
-            this.websiteChannelProvider = websiteChannelProvider;
-            this.webPageUrlRetriever = webPageUrlRetriever;
-            this.websiteChannelContext = websiteChannelContext;
-            this.currentLanguageRetriever = preferredLanguageRetriever;
+            this.homePageRepository = homePageRepository;
         }
 
 
@@ -171,21 +161,8 @@ namespace DancingGoat.Controllers
 
         private async Task<string> GetHomeWebPageUrl(CancellationToken cancellationToken)
         {
-            var websiteChannelId = websiteChannelContext.WebsiteChannelID;
-            var websiteChannel = await websiteChannelProvider.GetAsync(websiteChannelId, cancellationToken);
-
-            if (websiteChannel == null)
-            {
-                return string.Empty;
-            }
-
-            var homePageUrl = await webPageUrlRetriever.Retrieve(
-                websiteChannel.WebsiteChannelHomePage,
-                websiteChannelContext.WebsiteChannelName,
-                currentLanguageRetriever.Get(),
-                websiteChannelContext.IsPreview,
-                cancellationToken
-            );
+            var homePage = await homePageRepository.GetChannelHomePage(cancellationToken);
+            var homePageUrl = homePage.GetUrl();
 
             if (string.IsNullOrEmpty(homePageUrl?.RelativePath))
             {

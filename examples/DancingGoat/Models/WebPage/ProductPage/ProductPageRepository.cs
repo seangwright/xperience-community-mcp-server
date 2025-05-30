@@ -17,7 +17,6 @@ namespace DancingGoat.Models
     public class ProductPageRepository : ContentRepositoryBase
     {
         private readonly ProductRepository productRepository;
-        private readonly IWebPageUrlRetriever webPageUrlRetriever;
         private readonly ICacheDependencyBuilderFactory cacheDependencyBuilderFactory;
 
 
@@ -29,12 +28,10 @@ namespace DancingGoat.Models
             IContentQueryExecutor executor,
             IProgressiveCache cache,
             ProductRepository productRepository,
-            IWebPageUrlRetriever webPageUrlRetriever,
             ICacheDependencyBuilderFactory cacheDependencyBuilderFactory)
             : base(websiteChannelContext, executor, cache)
         {
             this.productRepository = productRepository;
-            this.webPageUrlRetriever = webPageUrlRetriever;
             this.cacheDependencyBuilderFactory = cacheDependencyBuilderFactory;
         }
 
@@ -49,6 +46,7 @@ namespace DancingGoat.Models
                 config => config
                         .ForWebsite(WebsiteChannelContext.WebsiteChannelName)
                         .WithLinkedItems(2)
+                        .SetUrlLanguageBehavior(UrlLanguageBehavior.UseRequestedLanguage)
                         .Where(where => where.WhereEquals(nameof(WebPageFields.WebPageItemID), webPageItemId))
                         .TopN(1))
                 .InLanguage(languageName);
@@ -73,6 +71,7 @@ namespace DancingGoat.Models
                         .Linking(nameof(ProductPage.ProductPageProduct), linkedProducts.Select(linkedProduct => linkedProduct.SystemFields.ContentItemID))
                         .WithLinkedItems(1)
                         .ForWebsite(WebsiteChannelContext.WebsiteChannelName, PathMatch.Children(DancingGoatConstants.PRODUCTS_PAGE_TREE_PATH))
+                        .SetUrlLanguageBehavior(UrlLanguageBehavior.UseRequestedLanguage)
                 )
                 .InLanguage(languageName);
 
@@ -88,7 +87,7 @@ namespace DancingGoat.Models
                 var productPage = productPages.FirstOrDefault(p => p.ProductPageProduct.FirstOrDefault()?.SystemFields.ContentItemID == linkedProduct.SystemFields.ContentItemID);
                 if (productPage != null)
                 {
-                    productUrls[linkedProduct.SystemFields.ContentItemID] = (await webPageUrlRetriever.Retrieve(productPage, languageName, cancellationToken)).RelativePath;
+                    productUrls[linkedProduct.SystemFields.ContentItemID] = productPage.GetUrl().RelativePath;
                 }
             }
 
@@ -98,7 +97,7 @@ namespace DancingGoat.Models
 
         private async Task<ISet<string>> GetDependencyCacheKeys(IEnumerable<ProductPage> productPages, CancellationToken cancellationToken)
         {
-            var productItemsDependencies = await productRepository.GetDependencyCacheKeys(productPages.Select(p => p.ProductPageProduct.FirstOrDefault() as IProductFields), cancellationToken);
+            var productItemsDependencies = await productRepository.GetDependencyCacheKeys(productPages.Select(p => p.ProductPageProduct.FirstOrDefault(x => x is IProductFields)).OfType<IProductFields>(), cancellationToken);
 
             var cacheDependencyBuilder = cacheDependencyBuilderFactory.Create();
             var cacheDependencies = cacheDependencyBuilder

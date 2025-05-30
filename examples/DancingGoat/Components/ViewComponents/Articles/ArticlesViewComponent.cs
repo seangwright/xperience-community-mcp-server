@@ -20,7 +20,6 @@ namespace DancingGoat.ViewComponents
     {
         private readonly ArticlePageRepository articlePageRepository;
         private readonly ArticlesSectionRepository articlesSectionRepository;
-        private readonly IWebPageUrlRetriever urlRetriever;
         private readonly IPreferredLanguageRetriever currentLanguageRetriever;
 
         private const int ARTICLES_PER_VIEW = 5;
@@ -29,12 +28,10 @@ namespace DancingGoat.ViewComponents
         public ArticlesViewComponent(
             ArticlePageRepository articlePageRepository,
             ArticlesSectionRepository articlesSectionRepository,
-            IWebPageUrlRetriever urlRetriever,
             IPreferredLanguageRetriever currentLanguageRetriever)
         {
             this.articlePageRepository = articlePageRepository;
             this.articlesSectionRepository = articlesSectionRepository;
-            this.urlRetriever = urlRetriever;
             this.currentLanguageRetriever = currentLanguageRetriever;
         }
 
@@ -55,13 +52,11 @@ namespace DancingGoat.ViewComponents
             var models = new List<ArticleViewModel>();
             foreach (var article in articlePages)
             {
-                var model = await ArticleViewModel.GetViewModel(article, urlRetriever, languageName, HttpContext.RequestAborted);
+                var model = ArticleViewModel.GetViewModel(article);
                 models.Add(model);
             }
 
-            var url = (await urlRetriever.Retrieve(articlesSection, languageName, HttpContext.RequestAborted)).RelativePath;
-
-            var viewModel = ArticlesSectionViewModel.GetViewModel(articlesSection, models, url);
+            var viewModel = ArticlesSectionViewModel.GetViewModel(articlesSection, models, articlesSection.GetUrl().RelativePath);
 
             return View("~/Components/ViewComponents/Articles/Default.cshtml", viewModel);
         }

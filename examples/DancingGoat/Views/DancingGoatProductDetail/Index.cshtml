@@ -4,7 +4,6 @@
 @using Kentico.Content.Web.Mvc.Routing
 
 @inject IPreferredLanguageRetriever currentLanguageRetriever
-@inject RazorPriceFormatter priceFormatter
 
 @model ProductViewModel
 
@@ -82,7 +81,7 @@
                             }
                             <div class="total-price-container row">
                                 <span class="total-price-label">@HtmlLocalizer["Unit price"]</span>
-                                <span class="total-price">@priceFormatter.Format(Model.Price ?? 0)</span>
+                                <span class="total-price"><price>@Model.Price</price></span>
                             </div>
                             <div class="add-to-cart-container">
                                 <input type="hidden" id="contentItemId" name="contentItemId" value="@Model.ContentItemId" />

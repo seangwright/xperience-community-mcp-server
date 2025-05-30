@@ -10,7 +10,9 @@
 @using DancingGoat.Models
 @using DancingGoat.ViewComponents
 
-@inject IWebPageUrlProvider webPageUrlProvider
+@inject HomePageRepository homePageRepository;
+@inject IWebsiteChannelContext websiteChannelContext;
+@inject WebPageUrlProvider webPageUrlProvider
 
 @model object;
 
@@ -18,7 +20,9 @@
     const string ENGLISH = "English";
     const string ESPANOL = "Español";
 
-    var homePageUrl = await webPageUrlProvider.HomePageUrl();
+    var homePage = await homePageRepository.GetChannelHomePage();
+    var homePageUrl = homePage.GetUrl().RelativePath;
+    
     var shoppingCartPageUrl = await webPageUrlProvider.ShoppingCartPageUrl();
 
     var routeDataLanguage = Convert.ToString(@ViewContext.RouteData.Values[WebPageRoutingOptions.LANGUAGE_ROUTE_VALUE_KEY]);

@@ -30,15 +30,15 @@ public sealed class DancingGoatShoppingCartController : Controller
 {
     private readonly ICurrentShoppingCartService currentShoppingCartService;
     private readonly IPreferredLanguageRetriever currentLanguageRetriever;
-    private readonly IProductVariantsExtractor productVariantsExtractor;
+    private readonly ProductVariantsExtractor productVariantsExtractor;
     private readonly ProductRepository productRepository;
     private readonly ProductPageRepository productPageRepository;
-    private readonly IWebPageUrlProvider webPageUrlProvider;
+    private readonly WebPageUrlProvider webPageUrlProvider;
 
 
     public DancingGoatShoppingCartController(ICurrentShoppingCartService currentShoppingCartService,
-        IPreferredLanguageRetriever currentLanguageRetriever, IProductVariantsExtractor productVariantsExtractor,
-        ProductRepository productRepository, ProductPageRepository productPageRepository, IWebPageUrlProvider webPageUrlProvider)
+        IPreferredLanguageRetriever currentLanguageRetriever, ProductVariantsExtractor productVariantsExtractor,
+        ProductRepository productRepository, ProductPageRepository productPageRepository, WebPageUrlProvider webPageUrlProvider)
     {
         this.currentShoppingCartService = currentShoppingCartService;
         this.currentLanguageRetriever = currentLanguageRetriever;

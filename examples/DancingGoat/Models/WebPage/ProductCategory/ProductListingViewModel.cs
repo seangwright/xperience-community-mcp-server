@@ -32,7 +32,6 @@ namespace DancingGoat.Models
                         return ProductListItemViewModel.GetViewModel(
                         product,
                         pageUrl,
-                        languageName,
                         productTagsTaxonomy.Tags.FirstOrDefault(tag => tag.Identifier == product.ProductFieldTags.FirstOrDefault()?.Identifier)?.Title);
                     })
                     .OrderBy(product => product.Name));

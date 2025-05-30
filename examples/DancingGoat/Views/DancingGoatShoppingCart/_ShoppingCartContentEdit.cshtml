@@ -4,7 +4,6 @@
 @using Kentico.Content.Web.Mvc.Routing
 
 @inject IPreferredLanguageRetriever currentLanguageRetriever
-@inject RazorPriceFormatter priceFormatter
 
 @model ShoppingCartViewModel
 
@@ -46,7 +45,7 @@
             @Html.ValidationMessage(cartItem.ContentItemId.ToString(), new { @class = "red"})
         </div>
         <div class="col-md-2 cart-item-subtotal">
-            <span>@priceFormatter.Format(cartItem.TotalPrice)</span>
+            <price>@cartItem.TotalPrice</price>
         </div>
     </div>
     <hr />

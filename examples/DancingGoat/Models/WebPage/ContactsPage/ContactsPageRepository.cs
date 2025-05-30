@@ -57,6 +57,7 @@ namespace DancingGoat.Models
             return new ContentItemQueryBuilder()
                     .ForContentType(ContactsPage.CONTENT_TYPE_NAME, config => config
                         .ForWebsite(WebsiteChannelContext.WebsiteChannelName)
+                        .SetUrlLanguageBehavior(UrlLanguageBehavior.UseRequestedLanguage)
                     .Where(where)
                     .TopN(1))
                     .InLanguage(languageName);

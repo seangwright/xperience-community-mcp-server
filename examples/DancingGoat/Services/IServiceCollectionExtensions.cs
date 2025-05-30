@@ -16,17 +16,34 @@ namespace DancingGoat
         {
             AddViewComponentServices(services);
             AddRepositories(services);
+            AddCommerceServices(services);
 
-            services.AddSingleton<ICurrentWebsiteChannelPrimaryLanguageRetriever, CurrentWebsiteChannelPrimaryLanguageRetriever>();
-            services.AddSingleton<IProductParametersExtractor, ProductParametersExtractor>();
-            services.AddSingleton<IProductVariantsExtractor, ProductVariantsExtractor>();
-            services.AddSingleton<ITagTitleRetriever, TagTitleRetriever>();
-            services.AddSingleton<IWebPageUrlProvider, WebPageUrlProvider>();
-            services.AddSingleton<IOrderService, OrderService>();
-            services.AddSingleton<ICustomerDataRetriever, CustomerDataRetriever>();
+            services.AddSingleton<CurrentWebsiteChannelPrimaryLanguageRetriever>();
+            services.AddSingleton<TagTitleRetriever>();
+            services.AddSingleton<WebPageUrlProvider>();
+        }
+
+
+        private static void AddCommerceServices(IServiceCollection services)
+        {
+            services.AddSingleton<ContentItemEventHandlers>();
+
+            services.AddSingleton<OrderService>();
+            services.AddSingleton<CustomerDataRetriever>();
             services.AddSingleton<ProductNameProvider>();
-            services.AddSingleton<RazorPriceFormatter>();
-            services.AddSingleton<IOrderNumberGenerator, OrderNumberGenerator>();
+            services.AddSingleton<OrderNumberGenerator>();
+            services.AddSingleton<ProductSkuValidator>();
+            services.AddSingleton<ProductParametersExtractor>();
+            services.AddSingleton<ProductVariantsExtractor>();
+
+            // Register extractors for product types
+            services.AddSingleton<IProductTypeParametersExtractor, ProductManufacturerExtractor>();
+            services.AddSingleton<IProductTypeParametersExtractor, CoffeeParametersExtractor>();
+            services.AddSingleton<IProductTypeParametersExtractor, GrinderParametersExtractor>();
+            services.AddSingleton<IProductTypeParametersExtractor, ProductTemplateAlphaSizeParametersExtractor>();
+
+            // Register extractors for product type variants
+            services.AddSingleton<IProductTypeVariantsExtractor, ProductTemplateAlphaSizeVariantsExtractor>();
         }
 
 

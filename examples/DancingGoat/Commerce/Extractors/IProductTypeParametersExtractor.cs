@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 namespace DancingGoat.Commerce
 {
     /// <summary>
-    /// Extractor of prodcut parameters based on the product type.
+    /// Extractor of product parameters based on the product type.
     /// </summary>
     public interface IProductTypeParametersExtractor
     {

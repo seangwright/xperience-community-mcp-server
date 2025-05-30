@@ -1,7 +1,13 @@
-﻿using DancingGoat;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+
+using DancingGoat;
+using DancingGoat.Commerce;
 using DancingGoat.Helpers.Generators;
 using DancingGoat.Models;
 
+using CMS;
 using CMS.Base;
 
 using Kentico.Activities.Web.Mvc;
@@ -11,13 +17,21 @@ using Kentico.Membership;
 using Kentico.OnlineMarketing.Web.Mvc;
 using Kentico.PageBuilder.Web.Mvc;
 using Kentico.Web.Mvc;
+
+
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Abstractions;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 using Samples.DancingGoat;
-using XperienceCommunity.MCPServer;
+
+[assembly: AssemblyDiscoverable]
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -58,12 +72,6 @@ builder.Services.AddLocalization()
 builder.Services.AddDancingGoatServices();
 builder.Services.AddSingleton<IEmailActivityTrackingEvaluator, EmailActivityTrackingEvaluator>();
 
-// Adds the MCP dependencies
-if (builder.Environment.IsDevelopment())
-{
-    builder.Services.AddXperienceMCPServer();
-}
-
 ConfigureMembershipServices(builder.Services);
 
 if (builder.Environment.IsDevelopment())
@@ -74,6 +82,8 @@ if (builder.Environment.IsDevelopment())
 var app = builder.Build();
 
 app.InitKentico();
+
+Initialize(app.Services);
 
 app.UseStaticFiles();
 
@@ -88,12 +98,8 @@ app.UseAuthorization();
 
 app.UseStatusCodePagesWithReExecute("/error/{0}");
 
-// Adds the MCP endpoint
-if (builder.Environment.IsDevelopment())
-{
-    app.UseXperienceMCPServer();
-}
 app.Kentico().MapRoutes();
+
 app.MapControllerRoute(
    name: "error",
    pattern: "error/{code}",
@@ -118,7 +124,7 @@ app.MapControllerRoute(
     }
 );
 
-await app.RunAsync();
+app.Run();
 
 
 static void ConfigureMembershipServices(IServiceCollection services)
@@ -168,4 +174,11 @@ static void ConfigureMembershipServices(IServiceCollection services)
     });
 
     services.AddAuthorization();
+}
+
+
+static void Initialize(IServiceProvider serviceProvider)
+{
+    var contentItemEventHandlers = serviceProvider.GetRequiredService<ContentItemEventHandlers>();
+    contentItemEventHandlers.Initialize();
 }

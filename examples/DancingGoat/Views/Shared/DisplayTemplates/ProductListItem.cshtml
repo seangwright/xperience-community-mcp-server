@@ -2,8 +2,6 @@
 @using DancingGoat.Commerce
 @using DancingGoat.Models
 
-@inject RazorPriceFormatter priceFormatter
-
 @model ProductListItemViewModel
 
 <article class="product-tile">
@@ -22,7 +20,7 @@
 
         <div class="product-tile-info">
             <span class="product-tile-price">
-                @priceFormatter.Format(Model.Price)
+                <price>@Model.Price</price>
             </span>
         </div>
     </a>

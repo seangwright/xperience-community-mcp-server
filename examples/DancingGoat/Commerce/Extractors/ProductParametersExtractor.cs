@@ -2,30 +2,31 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-using CMS.ContentEngine;
-
 using DancingGoat.Models;
 
 namespace DancingGoat.Commerce
 {
-    /// <inheritdoc cref="IProductParametersExtractor"/>
-    internal class ProductParametersExtractor : IProductParametersExtractor
+    /// <summary>
+    /// Extractor of product-specific parameters.
+    /// </summary>
+    public sealed class ProductParametersExtractor
     {
-        private readonly ICollection<IProductTypeParametersExtractor> parametersExtractors;
+        private readonly IEnumerable<IProductTypeParametersExtractor> parametersExtractors;
 
 
-        public ProductParametersExtractor(ITaxonomyRetriever taxonomyRetriever)
+        public ProductParametersExtractor(IEnumerable<IProductTypeParametersExtractor> parametersExtractors)
         {
-            parametersExtractors =
-            [
-                new ProductManufacturerExtractor(taxonomyRetriever),
-                new CoffeeParametersExtractor(taxonomyRetriever),
-                new GrinderParametersExtractor(),
-                new ProductTemplateAlphaSizeParametersExtractor(),
-            ];
+            this.parametersExtractors = parametersExtractors;
         }
 
-        /// <inheritdoc/>
+
+        /// <summary>
+        /// Extract product parameters and update the dictionary of parameters.
+        /// </summary>
+        /// <param name="product">Product to process.</param>
+        /// <param name="languageName">Language name used.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>Dictionary containing product parameters.</returns>
         public async Task<IDictionary<string, string>> ExtractParameters(IProductFields product, string languageName, CancellationToken cancellationToken)
         {
             var parameters = new Dictionary<string, string>();

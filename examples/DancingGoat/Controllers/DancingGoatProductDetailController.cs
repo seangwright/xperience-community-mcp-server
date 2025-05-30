@@ -23,18 +23,18 @@ namespace DancingGoat.Controllers
     {
         private readonly IWebPageDataContextRetriever webPageDataContextRetriever;
         private readonly ProductPageRepository productPageRepository;
-        private readonly IProductParametersExtractor productParametersExtractor;
-        private readonly IProductVariantsExtractor productVariantsExtractor;
-        private readonly ITagTitleRetriever tagTitleRetriever;
+        private readonly ProductParametersExtractor productParametersExtractor;
+        private readonly ProductVariantsExtractor productVariantsExtractor;
+        private readonly TagTitleRetriever tagTitleRetriever;
         private readonly IPreferredLanguageRetriever currentLanguageRetriever;
 
 
         public DancingGoatProductDetailController(
             IWebPageDataContextRetriever webPageDataContextRetriever,
             ProductPageRepository productPageRepository,
-            IProductParametersExtractor productParametersExtractor,
-            IProductVariantsExtractor productVariantsExtractor,
-            ITagTitleRetriever tagTitleRetriever,
+            ProductParametersExtractor productParametersExtractor,
+            ProductVariantsExtractor productVariantsExtractor,
+            TagTitleRetriever tagTitleRetriever,
             IPreferredLanguageRetriever currentLanguageRetriever)
         {
             this.webPageDataContextRetriever = webPageDataContextRetriever;
@@ -54,7 +54,7 @@ namespace DancingGoat.Controllers
             var languageName = currentLanguageRetriever.Get();
 
             var productPage = await productPageRepository.GetProductPage(webPageItemId, languageName, cancellationToken);
-            if (productPage == null)
+            if (productPage == null || !productPage.ProductPageProduct.Any())
             {
                 return NotFound();
             }

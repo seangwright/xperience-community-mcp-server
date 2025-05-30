@@ -20,12 +20,12 @@ namespace DancingGoat.Controllers
     public class DancingGoatProductSectionController : Controller
     {
         private readonly IWebsiteChannelContext websiteChannelContext;
-        private readonly IWebPageUrlProvider webPageUrlProvider;
+        private readonly WebPageUrlProvider webPageUrlProvider;
         private readonly IStringLocalizer<SharedResources> localizer;
 
 
         public DancingGoatProductSectionController(
-            IWebPageUrlProvider webPageUrlProvider,
+            WebPageUrlProvider webPageUrlProvider,
             IWebsiteChannelContext websiteChannelContext,
             IStringLocalizer<SharedResources> localizer)
         {

@@ -3,7 +3,7 @@
 namespace DancingGoat.Commerce
 {
     /// <summary>
-    /// Extractor of prodcut variants based on the product type.
+    /// Extractor of product variants based on the product type.
     /// </summary>
     public interface IProductTypeVariantsExtractor
     {
