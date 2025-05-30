@@ -1,7 +1,7 @@
 <Project>
   <PropertyGroup>
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
-    <CentralPackageVersionOverrideEnabled>false</CentralPackageVersionOverrideEnabled>
+    <CentralPackageVersionOverrideEnabled>true</CentralPackageVersionOverrideEnabled>
     <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
     <DisableImplicitNuGetFallbackFolder>true</DisableImplicitNuGetFallbackFolder>
   </PropertyGroup>
@@ -16,12 +16,12 @@
     <PackageVersion Include="coverlet.collector" Version="6.0.4" />
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.14.0" />
     <PackageVersion Include="NUnit" Version="4.3.2" />
-    <PackageVersion Include="NUnit.Analyzers" Version="4.7.0" />
+    <PackageVersion Include="NUnit.Analyzers" Version="4.8.1" />
     <PackageVersion Include="NUnit3TestAdapter" Version="5.0.0" />
 
     <!-- Other Dependencies -->
-    <PackageVersion Include="ModelContextProtocol" Version="0.2.0-preview.1" />
-    <PackageVersion Include="ModelContextProtocol.AspNetCore" Version="0.2.0-preview.1" />
+    <PackageVersion Include="ModelContextProtocol" Version="0.2.0-preview.2" />
+    <PackageVersion Include="ModelContextProtocol.AspNetCore" Version="0.2.0-preview.2" />
     <PackageVersion Include="SonarAnalyzer.CSharp" Version="10.10.0.116381" />
   </ItemGroup>
 </Project>

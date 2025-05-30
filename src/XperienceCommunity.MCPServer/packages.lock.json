@@ -33,9 +33,9 @@
       },
       "ModelContextProtocol": {
         "type": "Direct",
-        "requested": "[0.2.0-preview.1, )",
-        "resolved": "0.2.0-preview.1",
-        "contentHash": "voRPfoyqhtuEJrTl9MsvumwSFbaHmdn318aSaa/FM7sjH0Wk1XDYRtnKxAdaI30MyyMZWfSIwxqY+PdpTdyK1Q==",
+        "requested": "[0.2.0-preview.2, )",
+        "resolved": "0.2.0-preview.2",
+        "contentHash": "+TG6qvYfahfSpzQL3ms1cUZclk5n3N4CakLCfHu+hJxhiNcHcLpFX7WzcxIIODHEYQmUFBVf+ZPUrgw+YIl/lw==",
         "dependencies": {
           "Microsoft.Extensions.AI.Abstractions": "9.5.0",
           "Microsoft.Extensions.Hosting.Abstractions": "8.0.0",
@@ -46,11 +46,11 @@
       },
       "ModelContextProtocol.AspNetCore": {
         "type": "Direct",
-        "requested": "[0.2.0-preview.1, )",
-        "resolved": "0.2.0-preview.1",
-        "contentHash": "8i0KSuz2etfShSCurSAzZX6YrzCs8Fo+3KVviedI/+kMmYPme20Ld2iAjmZ9ASSVln7naidnyDu9l9cmm50Tkw==",
+        "requested": "[0.2.0-preview.2, )",
+        "resolved": "0.2.0-preview.2",
+        "contentHash": "1nxx+8V3bJBLK8XDCnNb8o/RTP6iFELJPqr5wIWOAbdVw0zSLT8B6rIoNQXVwv8j+T1/r/xmz5gZMC2QkRwGDA==",
         "dependencies": {
-          "ModelContextProtocol": "0.2.0-preview.1"
+          "ModelContextProtocol": "0.2.0-preview.2"
         }
       },
       "SonarAnalyzer.CSharp": {

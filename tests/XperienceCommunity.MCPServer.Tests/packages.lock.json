@@ -26,9 +26,9 @@
       },
       "NUnit.Analyzers": {
         "type": "Direct",
-        "requested": "[4.7.0, )",
-        "resolved": "4.7.0",
-        "contentHash": "1AjtK0uoJgxyobNtNwjQLlEs2X+9mgfWbWXiIktquTvpOhSXMf56TZF43+q2lIIYhV4IrfS82/pfo4uPUYka4w=="
+        "requested": "[4.8.1, )",
+        "resolved": "4.8.1",
+        "contentHash": "xRzeN2yFePqVQyIAXX6XJCYBaCZAyENtB7k1R9Xbx5XtfWtb++kHebTEvLQAr24fun/xxY/gEle23W6z2iErBQ=="
       },
       "NUnit3TestAdapter": {
         "type": "Direct",
@@ -1097,8 +1097,8 @@
         "dependencies": {
           "Kentico.Xperience.Admin": "[30.4.1, )",
           "Kentico.Xperience.WebApp": "[30.4.1, )",
-          "ModelContextProtocol": "[0.2.0-preview.1, )",
-          "ModelContextProtocol.AspNetCore": "[0.2.0-preview.1, )"
+          "ModelContextProtocol": "[0.2.0-preview.2, )",
+          "ModelContextProtocol.AspNetCore": "[0.2.0-preview.2, )"
         }
       },
       "Kentico.Xperience.Admin": {
@@ -1132,9 +1132,9 @@
       },
       "ModelContextProtocol": {
         "type": "CentralTransitive",
-        "requested": "[0.2.0-preview.1, )",
-        "resolved": "0.2.0-preview.1",
-        "contentHash": "voRPfoyqhtuEJrTl9MsvumwSFbaHmdn318aSaa/FM7sjH0Wk1XDYRtnKxAdaI30MyyMZWfSIwxqY+PdpTdyK1Q==",
+        "requested": "[0.2.0-preview.2, )",
+        "resolved": "0.2.0-preview.2",
+        "contentHash": "+TG6qvYfahfSpzQL3ms1cUZclk5n3N4CakLCfHu+hJxhiNcHcLpFX7WzcxIIODHEYQmUFBVf+ZPUrgw+YIl/lw==",
         "dependencies": {
           "Microsoft.Extensions.AI.Abstractions": "9.5.0",
           "Microsoft.Extensions.Hosting.Abstractions": "8.0.0",
@@ -1145,11 +1145,11 @@
       },
       "ModelContextProtocol.AspNetCore": {
         "type": "CentralTransitive",
-        "requested": "[0.2.0-preview.1, )",
-        "resolved": "0.2.0-preview.1",
-        "contentHash": "8i0KSuz2etfShSCurSAzZX6YrzCs8Fo+3KVviedI/+kMmYPme20Ld2iAjmZ9ASSVln7naidnyDu9l9cmm50Tkw==",
+        "requested": "[0.2.0-preview.2, )",
+        "resolved": "0.2.0-preview.2",
+        "contentHash": "1nxx+8V3bJBLK8XDCnNb8o/RTP6iFELJPqr5wIWOAbdVw0zSLT8B6rIoNQXVwv8j+T1/r/xmz5gZMC2QkRwGDA==",
         "dependencies": {
-          "ModelContextProtocol": "0.2.0-preview.1"
+          "ModelContextProtocol": "0.2.0-preview.2"
         }
       }
     }
