@@ -7,21 +7,22 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- Kentico Xperience Packages -->
-    <PackageVersion Include="Kentico.Xperience.Admin" Version="30.4.1" />
-    <PackageVersion Include="Kentico.Xperience.WebApp" Version="30.4.1" />
-    <PackageVersion Include="Kentico.Xperience.AzureStorage" Version="30.4.1" />
-    <PackageVersion Include="Kentico.Xperience.ImageProcessing" Version="30.4.1" />
+    <PackageVersion Include="Kentico.Xperience.Admin" Version="30.6.1" />
+    <PackageVersion Include="Kentico.Xperience.WebApp" Version="30.6.1" />
+    <PackageVersion Include="Kentico.Xperience.AzureStorage" Version="30.6.1" />
+    <PackageVersion Include="Kentico.Xperience.ImageProcessing" Version="30.6.1" />
+    <PackageVersion Include="kentico.xperience.mjml" Version="30.6.1" />
 
     <!-- Test Packages -->
     <PackageVersion Include="coverlet.collector" Version="6.0.4" />
-    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.14.0" />
+    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
     <PackageVersion Include="NUnit" Version="4.3.2" />
-    <PackageVersion Include="NUnit.Analyzers" Version="4.8.1" />
+    <PackageVersion Include="NUnit.Analyzers" Version="4.9.2" />
     <PackageVersion Include="NUnit3TestAdapter" Version="5.0.0" />
 
     <!-- Other Dependencies -->
-    <PackageVersion Include="ModelContextProtocol" Version="0.2.0-preview.2" />
-    <PackageVersion Include="ModelContextProtocol.AspNetCore" Version="0.2.0-preview.2" />
+    <PackageVersion Include="ModelContextProtocol" Version="0.3.0-preview.1" />
+    <PackageVersion Include="ModelContextProtocol.AspNetCore" Version="0.3.0-preview.1" />
     <PackageVersion Include="SonarAnalyzer.CSharp" Version="10.10.0.116381" />
   </ItemGroup>
 </Project>

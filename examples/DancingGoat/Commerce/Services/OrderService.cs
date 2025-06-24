@@ -9,8 +9,6 @@ using CMS.DataEngine;
 
 using DancingGoat.Models;
 
-using Kentico.Content.Web.Mvc.Routing;
-
 #pragma warning disable KXE0002 // Commerce feature is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
 namespace DancingGoat.Commerce;
 
@@ -19,10 +17,7 @@ namespace DancingGoat.Commerce;
 /// </summary>
 public sealed class OrderService
 {
-    private readonly IPreferredLanguageRetriever currentLanguageRetriever;
     private readonly ProductVariantsExtractor productVariantsExtractor;
-    private readonly IOrderStatusRetriever orderStatusRetriever;
-    private readonly ProductRepository productRepository;
     private readonly ProductNameProvider productNameProvider;
     private readonly IInfoProvider<OrderInfo> orderInfoProvider;
     private readonly IInfoProvider<OrderItemInfo> orderItemInfoProvider;
@@ -31,13 +26,13 @@ public sealed class OrderService
     private readonly IInfoProvider<CustomerAddressInfo> customerAddressInfoProvider;
     private readonly CustomerDataRetriever customerDataRetriever;
     private readonly OrderNumberGenerator orderNumberGenerator;
+    private readonly ProductRepository productRepository;
+    private readonly IInfoProvider<OrderStatusInfo> orderStatusInfoProvider;
+    private readonly IOrderNotificationService orderNotificationService;
 
 
     public OrderService(
-        IPreferredLanguageRetriever currentLanguageRetriever,
         ProductVariantsExtractor productVariantsExtractor,
-        IOrderStatusRetriever orderStatusRetriever,
-        ProductRepository productRepository,
         ProductNameProvider productNameProvider,
         IInfoProvider<OrderInfo> orderInfoProvider,
         IInfoProvider<OrderItemInfo> orderItemInfoProvider,
@@ -45,12 +40,12 @@ public sealed class OrderService
         IInfoProvider<CustomerInfo> customerInfoProvider,
         IInfoProvider<CustomerAddressInfo> customerAddressInfoProvider,
         CustomerDataRetriever customerDataRetriever,
-        OrderNumberGenerator orderNumberGenerator)
+        OrderNumberGenerator orderNumberGenerator,
+        ProductRepository productRepository,
+        IInfoProvider<OrderStatusInfo> orderStatusInfoProvider,
+        IOrderNotificationService orderNotificationService)
     {
-        this.currentLanguageRetriever = currentLanguageRetriever;
         this.productVariantsExtractor = productVariantsExtractor;
-        this.orderStatusRetriever = orderStatusRetriever;
-        this.productRepository = productRepository;
         this.productNameProvider = productNameProvider;
         this.orderInfoProvider = orderInfoProvider;
         this.orderItemInfoProvider = orderItemInfoProvider;
@@ -59,6 +54,9 @@ public sealed class OrderService
         this.customerAddressInfoProvider = customerAddressInfoProvider;
         this.customerDataRetriever = customerDataRetriever;
         this.orderNumberGenerator = orderNumberGenerator;
+        this.productRepository = productRepository;
+        this.orderStatusInfoProvider = orderStatusInfoProvider;
+        this.orderNotificationService = orderNotificationService;
     }
 
 
@@ -68,9 +66,8 @@ public sealed class OrderService
     /// <returns>Returns order number of newly create order.</returns>
     public async Task<string> CreateOrder(ShoppingCartDataModel shoppingCartData, CustomerDto customerDto, int memberId, CancellationToken cancellationToken)
     {
-        var languageName = currentLanguageRetriever.Get();
 
-        var products = await productRepository.GetProducts(shoppingCartData.Items.Select(item => item.ContentItemId).ToList(), languageName, cancellationToken);
+        var products = await productRepository.GetProductsByIds(shoppingCartData.Items.Select(item => item.ContentItemId), cancellationToken);
 
         var totalPrice = CalculationService.CalculateTotalPrice(shoppingCartData, products);
 
@@ -79,12 +76,13 @@ public sealed class OrderService
             int customerId = await UpsertCustomer(customerDto, memberId, cancellationToken);
 
             var orderNumber = await orderNumberGenerator.GenerateOrderNumber(cancellationToken);
+            var orderStatusId = await GetInitialOrderStatusId(cancellationToken);
 
             var order = new OrderInfo()
             {
                 OrderCreatedWhen = DateTime.Now,
                 OrderNumber = orderNumber,
-                OrderStatus = orderStatusRetriever.Get().First().Identifier,
+                OrderOrderStatusID = orderStatusId,
                 OrderTotalPrice = totalPrice,
                 OrderTotalTax = 0,
                 OrderTotalShipping = 0,
@@ -132,6 +130,8 @@ public sealed class OrderService
             }
 
             scope.Commit();
+
+            await orderNotificationService.SendNotification(order.OrderID, cancellationToken);
 
             return orderNumber;
         }
@@ -196,5 +196,17 @@ public sealed class OrderService
 
         return customer.CustomerID;
     }
+
+
+    /// <summary>
+    /// Get initial order status ID by sorting order status by OrderStatusOrder and taking the first one.
+    /// </summary>
+    private async Task<int> GetInitialOrderStatusId(CancellationToken cancellationToken) =>
+        await orderStatusInfoProvider
+              .Get()
+              .OrderByAscending(nameof(OrderStatusInfo.OrderStatusOrder))
+              .TopN(1)
+              .Column(nameof(OrderStatusInfo.OrderStatusID))
+              .GetScalarResultAsync<int>(cancellationToken: cancellationToken);
 }
-#pragma warning restore KXE0002 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
+#pragma warning restore KXE0002 // Commerce feature is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.

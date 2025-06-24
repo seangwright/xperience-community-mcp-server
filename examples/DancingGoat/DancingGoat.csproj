@@ -23,11 +23,13 @@
     <DefineConstants>$(DefineConstants);SEPARATED_ADMIN</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\src\XperienceCommunity.MCPServer\XperienceCommunity.MCPServer.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="kentico.xperience.admin" VersionOverride="30.5.2" Condition="'$(SeparatedAdmin)' == 'false'" />
-    <PackageReference Include="kentico.xperience.azurestorage" VersionOverride="30.5.2" />
-    <PackageReference Include="kentico.xperience.imageprocessing" VersionOverride="30.5.2" />
-    <PackageReference Include="kentico.xperience.webapp" VersionOverride="30.5.2" />
+    <PackageReference Include="kentico.xperience.admin" Condition="'$(SeparatedAdmin)' == 'false'" />
+    <PackageReference Include="kentico.xperience.azurestorage" />
+    <PackageReference Include="kentico.xperience.imageprocessing" />
+    <PackageReference Include="kentico.xperience.mjml" />
+    <PackageReference Include="kentico.xperience.webapp" />
   </ItemGroup>
 </Project>

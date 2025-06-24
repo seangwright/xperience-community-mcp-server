@@ -39,15 +39,21 @@ public sealed class DancingGoatCheckoutController : Controller
     private readonly CustomerDataRetriever customerDataRetriever;
     private readonly IPreferredLanguageRetriever currentLanguageRetriever;
     private readonly OrderService orderService;
-    private readonly ProductRepository productRepository;
-    private readonly ProductPageRepository productPageRepository;
     private readonly IStringLocalizer<SharedResources> localizer;
     private readonly ProductNameProvider productNameProvider;
+    private readonly ProductRepository productRepository;
 
-    public DancingGoatCheckoutController(CountryStateRepository countryStateRepository, WebPageUrlProvider webPageUrlProvider, ICurrentShoppingCartService currentShoppingCartService,
-                                         UserManager<ApplicationUser> userManager, CustomerDataRetriever customerDataRetriever, IPreferredLanguageRetriever currentLanguageRetriever,
-                                         OrderService orderService, ProductRepository productRepository, ProductPageRepository productPageRepository,
-                                         IStringLocalizer<SharedResources> localizer, ProductNameProvider productNameProvider)
+    public DancingGoatCheckoutController(
+        CountryStateRepository countryStateRepository,
+        WebPageUrlProvider webPageUrlProvider,
+        ICurrentShoppingCartService currentShoppingCartService,
+        UserManager<ApplicationUser> userManager,
+        CustomerDataRetriever customerDataRetriever,
+        IPreferredLanguageRetriever currentLanguageRetriever,
+        OrderService orderService,
+        IStringLocalizer<SharedResources> localizer,
+        ProductNameProvider productNameProvider,
+        ProductRepository productRepository)
     {
         this.countryStateRepository = countryStateRepository;
         this.webPageUrlProvider = webPageUrlProvider;
@@ -56,10 +62,9 @@ public sealed class DancingGoatCheckoutController : Controller
         this.customerDataRetriever = customerDataRetriever;
         this.currentLanguageRetriever = currentLanguageRetriever;
         this.orderService = orderService;
-        this.productRepository = productRepository;
-        this.productPageRepository = productPageRepository;
         this.localizer = localizer;
         this.productNameProvider = productNameProvider;
+        this.productRepository = productRepository;
     }
 
 
@@ -209,11 +214,11 @@ public sealed class DancingGoatCheckoutController : Controller
     private async Task<ShoppingCartViewModel> GetShoppingCartViewModel(ShoppingCartInfo shoppingCart, CancellationToken cancellationToken)
     {
         var languageName = currentLanguageRetriever.Get();
-
         var shoppingCartData = shoppingCart.GetShoppingCartDataModel();
 
-        var products = await productRepository.GetProducts(shoppingCartData.Items.Select(item => item.ContentItemId).ToList(), languageName, cancellationToken);
-        var productPageUrls = await productPageRepository.GetProductPageUrls(products.Cast<IContentItemFieldsSource>(), languageName, cancellationToken);
+        var products = await productRepository.GetProductsByIds(shoppingCartData.Items.Select(item => item.ContentItemId), cancellationToken);
+
+        var productPageUrls = await productRepository.GetProductPageUrls(products.Cast<IContentItemFieldsSource>().Select(p => p.SystemFields.ContentItemID), cancellationToken);
 
         var totalPrice = CalculationService.CalculateTotalPrice(shoppingCartData, products);
 
@@ -248,4 +253,5 @@ public sealed class DancingGoatCheckoutController : Controller
     /// <seealso cref="MemberInfo"/>"/>
     private async Task<ApplicationUser> GetAuthenticatedUser() => await userManager.GetUserAsync(User);
 }
+
 #pragma warning restore KXE0002 // Commerce feature is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.

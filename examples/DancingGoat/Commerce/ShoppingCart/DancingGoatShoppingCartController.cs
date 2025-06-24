@@ -29,31 +29,25 @@ namespace DancingGoat.Commerce;
 public sealed class DancingGoatShoppingCartController : Controller
 {
     private readonly ICurrentShoppingCartService currentShoppingCartService;
-    private readonly IPreferredLanguageRetriever currentLanguageRetriever;
     private readonly ProductVariantsExtractor productVariantsExtractor;
-    private readonly ProductRepository productRepository;
-    private readonly ProductPageRepository productPageRepository;
     private readonly WebPageUrlProvider webPageUrlProvider;
+    private readonly ProductRepository productRepository;
 
-
-    public DancingGoatShoppingCartController(ICurrentShoppingCartService currentShoppingCartService,
-        IPreferredLanguageRetriever currentLanguageRetriever, ProductVariantsExtractor productVariantsExtractor,
-        ProductRepository productRepository, ProductPageRepository productPageRepository, WebPageUrlProvider webPageUrlProvider)
+    public DancingGoatShoppingCartController(
+        ICurrentShoppingCartService currentShoppingCartService,
+        ProductVariantsExtractor productVariantsExtractor,
+        WebPageUrlProvider webPageUrlProvider,
+        ProductRepository productRepository)
     {
         this.currentShoppingCartService = currentShoppingCartService;
-        this.currentLanguageRetriever = currentLanguageRetriever;
         this.productVariantsExtractor = productVariantsExtractor;
-        this.productRepository = productRepository;
-        this.productPageRepository = productPageRepository;
         this.webPageUrlProvider = webPageUrlProvider;
+        this.productRepository = productRepository;
     }
 
 
     public async Task<IActionResult> Index(CancellationToken cancellationToken)
     {
-        // Web page identification data
-        var languageName = currentLanguageRetriever.Get();
-
         var shoppingCart = await currentShoppingCartService.Get(cancellationToken);
         if (shoppingCart == null)
         {
@@ -62,8 +56,9 @@ public sealed class DancingGoatShoppingCartController : Controller
 
         var shoppingCartData = shoppingCart.GetShoppingCartDataModel();
 
-        var products = await productRepository.GetProducts(shoppingCartData.Items.Select(item => item.ContentItemId).ToList(), languageName, cancellationToken);
-        var productPageUrls = await productPageRepository.GetProductPageUrls(products.Cast<IContentItemFieldsSource>(), languageName, cancellationToken);
+        var products = await productRepository.GetProductsByIds(shoppingCartData.Items.Select(item => item.ContentItemId), cancellationToken);
+
+        var productPageUrls = await productRepository.GetProductPageUrls(products.Cast<IContentItemFieldsSource>().Select(p => p.SystemFields.ContentItemID), cancellationToken);
 
         var totalPrice = CalculationService.CalculateTotalPrice(shoppingCartData, products);
 
