@@ -2,6 +2,7 @@ using System.ComponentModel;
 using System.Text.Json;
 
 using CMS.ContentEngine;
+using CMS.ContentEngine.Internal;
 using CMS.DataEngine;
 using CMS.Websites;
 using CMS.Websites.Internal;
@@ -94,9 +95,64 @@ public static class ContentRetrievalTool
     }
 
     /// <summary>
+    /// Gets a list of all reusable field schemas in the application.
+    /// </summary>
+    /// <param name="schemaManager"></param>
+    /// <param name="options"></param>
+    /// <returns></returns>
+    [McpServerTool(
+        Name = nameof(GetReusableFieldSchemas),
+        Destructive = false,
+        Idempotent = true,
+        OpenWorld = false,
+        ReadOnly = true,
+        Title = "Get all reusable field schemas"),
+    Description("Gets a list of all reusable field schemas in the application")]
+    public static string GetReusableFieldSchemas(
+        IReusableFieldSchemaManager schemaManager,
+        IOptions<XperienceMCPServerConfiguration> options)
+    {
+        var reusableFieldSchemas = schemaManager.GetAll();
+
+        return JsonSerializer.Serialize(
+            reusableFieldSchemas.Select(DataClassResponse.FromReusableFieldSchema),
+            options.Value.SerializerOptions);
+    }
+
+    /// <summary>
+    /// Gets a list of all reusable field schemas in the application.
+    /// </summary>
+    /// <param name="schemaManager"></param>
+    /// <param name="options"></param>
+    /// <param name="reusableFieldSchemaName"></param>
+    /// <returns></returns>
+    [McpServerTool(
+        Name = nameof(GetReusableFieldSchemaDetails),
+        Destructive = false,
+        Idempotent = true,
+        OpenWorld = false,
+        ReadOnly = true,
+        Title = "Get the details of a reusable field schema"),
+    Description("Gets the details of a reusable field schema in the application")]
+    public static string GetReusableFieldSchemaDetails(
+        IReusableFieldSchemaManager schemaManager,
+        IOptions<XperienceMCPServerConfiguration> options,
+        [Description("The name of the reusable field schema")] string reusableFieldSchemaName)
+    {
+        var fields = schemaManager.GetSchemaFields(reusableFieldSchemaName);
+        var schema = schemaManager.Get(reusableFieldSchemaName);
+        var contentTypeNames = schemaManager.GetContentTypesWithSchema(schema.Guid);
+
+        return JsonSerializer.Serialize(
+            new { fields, schema, contentTypeNames },
+            options.Value.SerializerOptions);
+    }
+
+    /// <summary>
     /// 
     /// </summary>
     /// <param name="options"></param>
+    /// <param name="manager"></param>
     /// <param name="contentType"></param>
     /// <returns></returns>
     /// <exception cref="ArgumentException"></exception>
@@ -110,11 +166,12 @@ public static class ContentRetrievalTool
     Description("Gets the content type information for the given content type")]
     public static string GetContentTypeDetails(
         IOptions<XperienceMCPServerConfiguration> options,
+        IReusableFieldSchemaManager manager,
         [Description("The content type name")] string contentType)
     {
         var dataClassInfo = DataClassInfoProvider.GetDataClassInfo(contentType) ?? throw new ArgumentException($"No content type found with the name '{contentType}'.", nameof(contentType));
 
-        var dto = DataClassDetailResponse.FromDataClassInfo(dataClassInfo);
+        var dto = DataClassDetailResponse.FromDataClassInfo(dataClassInfo, manager);
         return JsonSerializer.Serialize(dto, options.Value.SerializerOptions);
     }
 
@@ -122,6 +179,7 @@ public static class ContentRetrievalTool
     /// 
     /// </summary>
     /// <param name="options"></param>
+    /// <param name="manager"></param>
     /// <param name="dataClassInfo"></param>
     /// <returns></returns>
     /// <exception cref="ArgumentException"></exception>
@@ -135,19 +193,21 @@ public static class ContentRetrievalTool
     Description("Creates a new content type in the Xperience by Kentico database from the given settings")]
     public static async Task<string> CreateNewContentType(
         IOptions<XperienceMCPServerConfiguration> options,
+        IReusableFieldSchemaManager manager,
         [Description("The content type definition")] DataClassInfoNewRequest dataClassInfo)
     {
         var dc = await DataClassInfoNewRequest.ToNewDataClassInfo(dataClassInfo);
 
         DataClassInfoProvider.SetDataClassInfo(dc);
 
-        return JsonSerializer.Serialize(DataClassDetailResponse.FromDataClassInfo(dc), options.Value.SerializerOptions);
+        return JsonSerializer.Serialize(DataClassDetailResponse.FromDataClassInfo(dc, manager), options.Value.SerializerOptions);
     }
 
     /// <summary>
     /// 
     /// </summary>
     /// <param name="options"></param>
+    /// <param name="manager"></param>
     /// <param name="dataClassInfo"></param>
     /// <returns></returns>
     /// <exception cref="ArgumentException"></exception>
@@ -161,13 +221,14 @@ public static class ContentRetrievalTool
     Description("Updates an existing content type in the Xperience by Kentico database from the given settings")]
     public static string UpdateContentType(
         IOptions<XperienceMCPServerConfiguration> options,
+        IReusableFieldSchemaManager manager,
         [Description("The content type definition")] DataClassDetailResponse dataClassInfo)
     {
         var dc = DataClassDetailResponse.ToExistingDataClassInfo(dataClassInfo);
 
         DataClassInfoProvider.SetDataClassInfo(dc);
 
-        return JsonSerializer.Serialize(DataClassDetailResponse.FromDataClassInfo(dc), options.Value.SerializerOptions);
+        return JsonSerializer.Serialize(DataClassDetailResponse.FromDataClassInfo(dc, manager), options.Value.SerializerOptions);
     }
 
     /// <summary>

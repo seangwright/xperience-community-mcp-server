@@ -1,4 +1,5 @@
 using CMS.ContentEngine;
+using CMS.ContentEngine.Internal;
 using CMS.DataEngine;
 
 namespace XperienceCommunity.MCPServer.Tools;
@@ -11,7 +12,7 @@ public class DataClassResponse
     /// <summary>
     /// 
     /// </summary>
-    public int ClassID { get; init; }
+    public Guid ClassGUID { get; init; }
     /// <summary>
     /// 
     /// </summary>
@@ -33,17 +34,33 @@ public class DataClassResponse
     /// <exception cref="ArgumentNullException"></exception>
     public static DataClassResponse FromDataClassInfo(DataClassInfo info)
     {
-        if (info == null)
-        {
-            throw new ArgumentNullException(nameof(info));
-        }
+        ArgumentNullException.ThrowIfNull(info);
 
         return new DataClassResponse
         {
-            ClassID = info.ClassID,
+            ClassGUID = info.ClassGUID,
             ClassDisplayName = info.ClassDisplayName,
             ClassName = info.ClassName,
             ClassContentTypeType = info.ClassContentTypeType,
+        };
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="schema"></param>
+    /// <returns></returns>
+    /// <exception cref="ArgumentNullException"></exception>
+    public static DataClassResponse FromReusableFieldSchema(ReusableFieldSchema schema)
+    {
+        ArgumentNullException.ThrowIfNull(schema);
+
+        return new DataClassResponse
+        {
+            ClassGUID = schema.Guid,
+            ClassDisplayName = schema.DisplayName,
+            ClassName = schema.Name,
+            ClassContentTypeType = "ReusableFieldSchema",
         };
     }
 }
@@ -124,16 +141,19 @@ public class DataClassDetailResponse
     public Guid ClassGUID { get; init; }
 
     /// <summary>
+    /// A list of all reusable field schemas for the content type.
+    /// </summary>
+    public IEnumerable<ReusableFieldSchema> ReusableFieldSchemas { get; init; } = Enumerable.Empty<ReusableFieldSchema>();
+
+    /// <summary>
     /// Creates a new instance of DataClassInfoDto from a DataClassInfo instance.
     /// </summary>
     /// <param name="info">The DataClassInfo to convert</param>
+    /// <param name="manager"></param>
     /// <returns>A new DataClassInfoDto instance</returns>
-    public static DataClassDetailResponse FromDataClassInfo(DataClassInfo info)
+    public static DataClassDetailResponse FromDataClassInfo(DataClassInfo info, IReusableFieldSchemaManager manager)
     {
-        if (info == null)
-        {
-            throw new ArgumentNullException(nameof(info));
-        }
+        ArgumentNullException.ThrowIfNull(info);
 
         return new DataClassDetailResponse
         {
@@ -150,7 +170,8 @@ public class DataClassDetailResponse
             ClassFormDefinition = info.ClassFormDefinition,
             ClassXmlSchema = info.ClassXmlSchema,
             ClassLastModified = info.ClassLastModified,
-            ClassGUID = info.ClassGUID
+            ClassGUID = info.ClassGUID,
+            ReusableFieldSchemas = manager.GetSchemasForContentType(info.ClassName)
         };
     }
 
