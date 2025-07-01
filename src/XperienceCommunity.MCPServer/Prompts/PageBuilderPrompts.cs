@@ -39,6 +39,7 @@ public static class PageBuilderPrompts
         ```
 
         - Uses C# primary constructors
+        - The primary constructor should have an IContentRetriever parameter assigned to a private readonly field named contentRetriever
         - The widget, properties, and view model classes should all be in the same file
         - Has a Razor view named the same as the widget without the "Widget" suffix
         - Both the Widget C# class and Razor view are located in a folder for the widget, 
