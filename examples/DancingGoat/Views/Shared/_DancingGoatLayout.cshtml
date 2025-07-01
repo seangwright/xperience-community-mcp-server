@@ -2,6 +2,7 @@
 @using CMS.Websites
 @using DancingGoat.Services
 @using Kentico.Activities.Web.Mvc
+@using Kentico.Content.Web.Mvc
 @using Kentico.Content.Web.Mvc.PageBuilder
 @using Kentico.Content.Web.Mvc.Routing
 @using Kentico.Forms.Web.Mvc.Widgets
@@ -10,7 +11,7 @@
 @using DancingGoat.Models
 @using DancingGoat.ViewComponents
 
-@inject HomePageRepository homePageRepository;
+@inject IContentRetriever contentRetriever;
 @inject IWebsiteChannelContext websiteChannelContext;
 @inject WebPageUrlProvider webPageUrlProvider
 
@@ -20,7 +21,13 @@
     const string ENGLISH = "English";
     const string ESPANOL = "Español";
 
-    var homePage = await homePageRepository.GetChannelHomePage();
+    var homePage = (await contentRetriever.RetrievePages<HomePage>(
+        RetrievePagesParameters.Default,
+        query => query.UrlPathColumns(),
+        new RetrievalCacheSettings("UrlPathColumns"),
+        cancellationToken: Context.RequestAborted
+    )).FirstOrDefault();
+    
     var homePageUrl = homePage.GetUrl().RelativePath;
     
     var shoppingCartPageUrl = await webPageUrlProvider.ShoppingCartPageUrl();

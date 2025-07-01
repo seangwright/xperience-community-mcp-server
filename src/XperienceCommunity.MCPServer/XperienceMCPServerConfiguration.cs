@@ -97,11 +97,6 @@ public class XperienceMCPServerConfiguration
     internal static void ValidateConfiguration(XperienceMCPServerConfiguration configuration)
     {
         configuration.ContentTypes ??= [];
-        if (configuration.ContentTypes.Count == 0)
-        {
-            Console.WriteLine("All content types are exposed over the MCP server");
-        }
-
         var invalidContentTypes = configuration.ContentTypes
             .Where(contentType => string.IsNullOrWhiteSpace(contentType.CodeName));
 

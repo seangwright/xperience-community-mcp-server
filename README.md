@@ -27,6 +27,7 @@ For a more detailed explanation of this project, read the blog post _[Turn your 
 
 | Xperience Version | Library Version |
 | ----------------- | --------------- |
+| >= 30.6.1         | 2.0.0           |
 | >= 30.4.1         | 1.0.0           |
 
 ### Dependencies

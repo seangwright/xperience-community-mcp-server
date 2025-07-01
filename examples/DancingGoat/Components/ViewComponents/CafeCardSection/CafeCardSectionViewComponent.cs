@@ -1,12 +1,13 @@
 ﻿using System.Collections.Generic;
-using System.Threading.Tasks;
+using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 
 using CMS.Websites;
 
 using DancingGoat.Models;
 
-using Kentico.Content.Web.Mvc.Routing;
+using Kentico.Content.Web.Mvc;
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ViewComponents;
@@ -18,32 +19,32 @@ namespace DancingGoat.ViewComponents
     /// </summary>
     public class CafeCardSectionViewComponent : ViewComponent
     {
-        private readonly ContactsPageRepository contactsPageRepository;
-        private readonly IPreferredLanguageRetriever currentLanguageRetriever;
+        private readonly IContentRetriever contentRetriever;
 
-
-        public CafeCardSectionViewComponent(IPreferredLanguageRetriever currentLanguageRetriever, ContactsPageRepository contactsPageRepository)
+        public CafeCardSectionViewComponent(IContentRetriever contentRetriever)
         {
-            this.currentLanguageRetriever = currentLanguageRetriever;
-            this.contactsPageRepository = contactsPageRepository;
+            this.contentRetriever = contentRetriever;
         }
 
 
         public async Task<ViewViewComponentResult> InvokeAsync(IEnumerable<CafeViewModel> cafes)
         {
-            string languageName = currentLanguageRetriever.Get();
-            string contactsPagePath = await GetContactsPagePath(languageName, HttpContext.RequestAborted);
+            string contactsPagePath = await GetContactsPagePath(HttpContext.RequestAborted);
             var model = new CafeCardSectionViewModel(cafes, contactsPagePath);
 
             return View("~/Components/ViewComponents/CafeCardSection/Default.cshtml", model);
         }
 
 
-        private async Task<string> GetContactsPagePath(string languageName, CancellationToken cancellationToken)
+        private async Task<string> GetContactsPagePath(CancellationToken cancellationToken)
         {
-            const string CONTACTS_PAGE_TREE_PATH = "/Contacts";
+            var contactsPage = (await contentRetriever.RetrievePages<ContactsPage>(
+                RetrievePagesParameters.Default,
+                query => query.UrlPathColumns(),
+                new RetrievalCacheSettings("UrlPathColumns"),
+                cancellationToken
+            )).FirstOrDefault();
 
-            var contactsPage = await contactsPageRepository.GetContactsPage(CONTACTS_PAGE_TREE_PATH, languageName, cancellationToken);
             var url = contactsPage.GetUrl();
 
             return url.RelativePath;

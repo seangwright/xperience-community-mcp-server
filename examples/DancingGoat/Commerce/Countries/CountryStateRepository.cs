@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Threading;
+using System.Threading.Tasks;
 
 using CMS.DataEngine;
 using CMS.Globalization;
@@ -10,6 +10,9 @@ using CMS.Websites.Routing;
 
 namespace DancingGoat.Commerce;
 
+/// <summary>
+/// Repository for managing country and state information retrieval operations.
+/// </summary>
 public class CountryStateRepository
 {
     private readonly IWebsiteChannelContext websiteChannelContext;
@@ -18,6 +21,15 @@ public class CountryStateRepository
     private readonly IInfoProvider<CountryInfo> countryInfoProvider;
     private readonly IInfoProvider<StateInfo> stateInfoProvider;
 
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="CountryStateRepository"/> class.
+    /// </summary>
+    /// <param name="websiteChannelContext">The website channel context.</param>
+    /// <param name="cache">The cache.</param>
+    /// <param name="cacheDependencyBuilderFactory">The cache dependency builder factory.</param>
+    /// <param name="countryInfoProvider">The country info provider.</param>
+    /// <param name="stateInfoProvider">The state info provider.</param>
     public CountryStateRepository(IWebsiteChannelContext websiteChannelContext, IProgressiveCache cache, ICacheDependencyBuilderFactory cacheDependencyBuilderFactory,
         IInfoProvider<CountryInfo> countryInfoProvider, IInfoProvider<StateInfo> stateInfoProvider)
     {

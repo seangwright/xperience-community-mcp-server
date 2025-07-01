@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 
 using DancingGoat;
 using DancingGoat.Commerce;
+using DancingGoat.EmailComponents;
 using DancingGoat.Helpers.Generators;
 using DancingGoat.Models;
 
@@ -13,9 +14,11 @@ using CMS.Base;
 using Kentico.Activities.Web.Mvc;
 using Kentico.Commerce.Web.Mvc;
 using Kentico.Content.Web.Mvc.Routing;
+using Kentico.EmailBuilder.Web.Mvc;
 using Kentico.Membership;
 using Kentico.OnlineMarketing.Web.Mvc;
 using Kentico.PageBuilder.Web.Mvc;
+using Kentico.Xperience.Mjml;
 using Kentico.Web.Mvc;
 
 
@@ -30,6 +33,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
 using Samples.DancingGoat;
+using XperienceCommunity.MCPServer;
 
 [assembly: AssemblyDiscoverable]
 
@@ -50,6 +54,7 @@ builder.Services.AddKentico(features =>
         }
     });
 
+    features.UseEmailBuilder();
     features.UseWebPageRouting();
     features.UseEmailMarketing();
     features.UseEmailStatisticsLogging();
@@ -72,11 +77,17 @@ builder.Services.AddLocalization()
 builder.Services.AddDancingGoatServices();
 builder.Services.AddSingleton<IEmailActivityTrackingEvaluator, EmailActivityTrackingEvaluator>();
 
+ConfigureEmailBuilder(builder.Services);
 ConfigureMembershipServices(builder.Services);
 
 if (builder.Environment.IsDevelopment())
 {
     builder.Services.Configure<UrlResolveOptions>(options => options.UseSSL = false);
+}
+
+if (builder.Environment.IsDevelopment())
+{
+    builder.Services.AddXperienceMCPServer();
 }
 
 var app = builder.Build();
@@ -97,6 +108,11 @@ app.UseKentico();
 app.UseAuthorization();
 
 app.UseStatusCodePagesWithReExecute("/error/{0}");
+
+if (builder.Environment.IsDevelopment())
+{
+    app.UseXperienceMCPServer();
+}
 
 app.Kentico().MapRoutes();
 
@@ -181,4 +197,17 @@ static void Initialize(IServiceProvider serviceProvider)
 {
     var contentItemEventHandlers = serviceProvider.GetRequiredService<ContentItemEventHandlers>();
     contentItemEventHandlers.Initialize();
+}
+
+
+static void ConfigureEmailBuilder(IServiceCollection services)
+{
+    services.Configure((EmailBuilderOptions options) =>
+    {
+        options.AllowedEmailContentTypeNames = ["DancingGoat.BuilderEmail"];
+        options.RegisterDefaultSection = false;
+        options.DefaultSectionIdentifier = DancingGoatFullWidthEmailSection.IDENTIFIER;
+    });
+
+    services.AddMjmlForEmails();
 }

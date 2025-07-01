@@ -15,7 +15,6 @@ namespace DancingGoat
         public static void AddDancingGoatServices(this IServiceCollection services)
         {
             AddViewComponentServices(services);
-            AddRepositories(services);
             AddCommerceServices(services);
 
             services.AddSingleton<CurrentWebsiteChannelPrimaryLanguageRetriever>();
@@ -35,6 +34,8 @@ namespace DancingGoat
             services.AddSingleton<ProductSkuValidator>();
             services.AddSingleton<ProductParametersExtractor>();
             services.AddSingleton<ProductVariantsExtractor>();
+            services.AddSingleton<CountryStateRepository>();
+            services.AddSingleton<ProductRepository>();
 
             // Register extractors for product types
             services.AddSingleton<IProductTypeParametersExtractor, ProductManufacturerExtractor>();
@@ -44,29 +45,6 @@ namespace DancingGoat
 
             // Register extractors for product type variants
             services.AddSingleton<IProductTypeVariantsExtractor, ProductTemplateAlphaSizeVariantsExtractor>();
-        }
-
-
-        private static void AddRepositories(IServiceCollection services)
-        {
-            services.AddSingleton<SocialLinkRepository>();
-            services.AddSingleton<ContactRepository>();
-            services.AddSingleton<HomePageRepository>();
-            services.AddSingleton<ArticlePageRepository>();
-            services.AddSingleton<ArticlesSectionRepository>();
-            services.AddSingleton<ConfirmationPageRepository>();
-            services.AddSingleton<ImageRepository>();
-            services.AddSingleton<CafeRepository>();
-            services.AddSingleton<NavigationItemRepository>();
-            services.AddSingleton<ContactsPageRepository>();
-            services.AddSingleton<PrivacyPageRepository>();
-            services.AddSingleton<LandingPageRepository>();
-            services.AddSingleton<ProductSectionRepository>();
-            services.AddSingleton<ProductPageRepository>();
-            services.AddSingleton<ProductRepository>();
-            services.AddSingleton<StoreRepository>();
-            services.AddSingleton<ProductCategoryRepository>();
-            services.AddSingleton<CountryStateRepository>();
         }
 
 

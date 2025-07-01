@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
@@ -8,7 +9,7 @@ using CMS.Websites;
 
 using DancingGoat.Models;
 
-using Kentico.Content.Web.Mvc.Routing;
+using Kentico.Content.Web.Mvc;
 using Kentico.Membership;
 
 using Microsoft.AspNetCore.Authorization;
@@ -24,7 +25,7 @@ namespace DancingGoat.Controllers
     {
         private readonly IStringLocalizer<SharedResources> localizer;
         private readonly IEventLogService eventLogService;
-        private readonly HomePageRepository homePageRepository;
+        private readonly IContentRetriever contentRetriever;
         private readonly UserManager<ApplicationUser> userManager;
         private readonly SignInManager<ApplicationUser> signInManager;
 
@@ -34,14 +35,13 @@ namespace DancingGoat.Controllers
             SignInManager<ApplicationUser> signInManager,
             IStringLocalizer<SharedResources> localizer,
             IEventLogService eventLogService,
-            IPreferredLanguageRetriever preferredLanguageRetriever,
-            HomePageRepository homePageRepository)
+            IContentRetriever contentRetriever)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
             this.localizer = localizer;
             this.eventLogService = eventLogService;
-            this.homePageRepository = homePageRepository;
+            this.contentRetriever = contentRetriever;
         }
 
 
@@ -159,18 +159,16 @@ namespace DancingGoat.Controllers
         }
 
 
-        private async Task<string> GetHomeWebPageUrl(CancellationToken cancellationToken)
+        private async Task<string> GetHomeWebPageUrl(CancellationToken cancellationToken = default)
         {
-            var homePage = await homePageRepository.GetChannelHomePage(cancellationToken);
-            var homePageUrl = homePage.GetUrl();
+            var homePage = (await contentRetriever.RetrievePages<HomePage>(
+                RetrievePagesParameters.Default,
+                query => query.UrlPathColumns(),
+                new RetrievalCacheSettings("UrlPathColumns"),
+                cancellationToken
+            )).FirstOrDefault();
 
-            if (string.IsNullOrEmpty(homePageUrl?.RelativePath))
-            {
-                return "/";
-            }
-
-            return homePageUrl.RelativePath;
-
+            return homePage.GetUrl().RelativePath;
         }
     }
 }
