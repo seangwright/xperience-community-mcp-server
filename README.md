@@ -8,7 +8,7 @@
 
 ## Description
 
-> [!IMPORTANT]
+> [!WARNING]
 > This package has been deprecated. Use the following native Xperience by Kentico AI capabilities instead:
 >
 > - [Content type management API + MCP server](https://docs.kentico.com/x/management_api_xp)
