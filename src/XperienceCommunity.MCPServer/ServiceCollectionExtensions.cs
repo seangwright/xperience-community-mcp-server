@@ -20,20 +20,22 @@ public static class ServiceCollectionExtensions
     };
 
     /// <summary>
-    /// 
+    /// Adds MCP server services to the service collection.
     /// </summary>
-    /// <param name="services"></param>
-    /// <returns></returns>
+    /// <param name="services">The service collection.</param>
+    /// <returns>The service collection for chaining.</returns>
+    [Obsolete("XperienceCommunity.MCPServer is deprecated. Use Xperience by Kentico's native Content type management API + MCP server (https://docs.kentico.com/x/management_api_xp) and Documentation MCP server (https://docs.kentico.com/x/mcp_server_xp) instead.")]
     public static IServiceCollection AddXperienceMCPServer(this IServiceCollection services) =>
         services
             .AddXperienceMCPServer(options => { });
 
     /// <summary>
-    /// 
+    /// Adds MCP server services to the service collection with configuration.
     /// </summary>
-    /// <param name="services"></param>
-    /// <param name="configureOptions"></param>
-    /// <returns></returns>
+    /// <param name="services">The service collection.</param>
+    /// <param name="configureOptions">Configuration action.</param>
+    /// <returns>The service collection for chaining.</returns>
+    [Obsolete("XperienceCommunity.MCPServer is deprecated. Use Xperience by Kentico's native Content type management API + MCP server (https://docs.kentico.com/x/management_api_xp) and Documentation MCP server (https://docs.kentico.com/x/mcp_server_xp) instead.")]
     public static IServiceCollection AddXperienceMCPServer(
      this IServiceCollection services,
      Action<XperienceMCPServerConfiguration> configureOptions)
@@ -60,10 +62,11 @@ public static class ServiceCollectionExtensions
     }
 
     /// <summary>
-    /// 
+    /// Configures the MCP server endpoint.
     /// </summary>
-    /// <param name="app"></param>
-    /// <returns></returns>
+    /// <param name="app">The web application.</param>
+    /// <returns>The application builder for chaining.</returns>
+    [Obsolete("XperienceCommunity.MCPServer is deprecated. Use Xperience by Kentico's native Content type management API + MCP server (https://docs.kentico.com/x/management_api_xp) and Documentation MCP server (https://docs.kentico.com/x/mcp_server_xp) instead.")]
     public static IApplicationBuilder UseXperienceMCPServer(this WebApplication app)
     {
         var options = app.Services

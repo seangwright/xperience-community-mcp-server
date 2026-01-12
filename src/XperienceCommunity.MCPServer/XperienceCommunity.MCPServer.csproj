@@ -1,9 +1,13 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <Description>Model Context Protocol (MCP) server integration for Xperience by Kentico applications</Description>
+    <Description>[DEPRECATED] Model Context Protocol (MCP) server integration for Xperience by Kentico applications. This package is deprecated in favor of native Xperience by Kentico AI capabilities.</Description>
     <NoWarn>S101</NoWarn>
   </PropertyGroup>
+
+  <Target Name="XperienceMCPServerDeprecationWarning" BeforeTargets="CoreCompile">
+    <Warning Text="XperienceCommunity.MCPServer is deprecated and will no longer receive updates. Please migrate to Xperience by Kentico's native AI capabilities." />
+  </Target>
 
   <ItemGroup>
     <PackageReference Include="Kentico.Xperience.WebApp" />

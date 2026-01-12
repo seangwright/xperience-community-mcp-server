@@ -8,6 +8,13 @@
 
 ## Description
 
+> [!WARNING]
+> This package has been deprecated. Use the following native Xperience by Kentico AI capabilities instead:
+>
+> - [Content type management API + MCP server](https://docs.kentico.com/x/management_api_xp)
+> - [Documentation MCP server](https://docs.kentico.com/x/mcp_server_xp)
+> - [Content Modeling MCP Server](https://docs.kentico.com/x/content_modeling_mcp_guides)
+
 An [MCP Server](https://code.visualstudio.com/docs/copilot/chat/mcp-servers) built with the [.NET MCP Server SDK](https://github.com/modelcontextprotocol/csharp-sdk) tailored for Xperience by Kentico projects and installed as a NuGet package.
 
 Why use this library? By exposing a discrete set of documented tools to [an AI agent](https://code.visualstudio.com/blogs/2025/02/24/introducing-copilot-agent-mode) in an Xperience by Kentico project, that agent has more well structured context and capabilities. This means it can be a better copilot to developers building features for marketers using Xperience by Kentico.
@@ -27,7 +34,7 @@ For a more detailed explanation of this project, read the blog post _[Turn your 
 
 | Xperience Version | Library Version |
 | ----------------- | --------------- |
-| >= 30.6.1         | 2.0.0           |
+| >= 30.6.1         | 2.0.x           |
 | >= 30.4.1         | 1.0.0           |
 
 ### Dependencies
